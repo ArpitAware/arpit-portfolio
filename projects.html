@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Projects — Arpit Aware</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050508;--bg2:#08080e;--surface:#0e0e17;--surface2:#13131c;
+  --border:rgba(255,255,255,0.055);--border2:rgba(255,255,255,0.1);
+  --accent:#6ee7b7;--accent2:#818cf8;--accent3:#f472b6;
+  --text:#e8e8f0;--text2:#a0a0b4;--muted:#5a5a70;
+  --fd:'Syne',sans-serif;--fb:'DM Mono',monospace;--fs:'Instrument Serif',serif;
+  --ease:cubic-bezier(0.23,1,0.32,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;overflow-x:hidden;cursor:none}
+a,button{cursor:none}
+::selection{background:rgba(110,231,183,0.2);color:var(--accent)}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent)}
+
+/* CURSOR */
+#cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8000;mix-blend-mode:screen;transition:width .3s,height .3s,background .3s;will-change:transform}
+#cur-r{width:34px;height:34px;border:1px solid rgba(110,231,183,0.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:7999;transition:width .3s,height .3s,border-color .3s;will-change:transform}
+.big-cur #cur{width:64px;height:64px}
+.big-cur #cur-r{width:64px;height:64px;border-color:transparent}
+
+/* NOISE & CANVAS */
+#noise{position:fixed;inset:0;z-index:4000;pointer-events:none;opacity:0.032;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/150px 150px}
+#pc{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* HEADER */
+header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:200}
+.h-back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:color .3s}
+.h-back:hover{color:var(--accent)}
+.h-title{font-family:var(--fd);font-weight:800;font-size:2rem;color:var(--text)}
+
+/* PROJECTS */
+.sec{padding:4rem 5rem;position:relative;z-index:1}
+.si{max-width:1200px;margin:0 auto}
+.pl{display:grid;grid-template-columns:1fr;gap:1.5rem}
+.pi{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.8rem 3rem;display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:none}
+.pi::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(110,231,183,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s ease}
+.pi:hover::before{opacity:1}
+.pi:hover{border-color:rgba(110,231,183,.22);transform:translateY(-4px);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.pidx{font-family:var(--fd);font-weight:800;font-size:3.5rem;color:rgba(255,255,255,.04);line-height:1;user-select:none;min-width:80px;transition:color .4s ease}
+.pi:hover .pidx{color:rgba(110,231,183,.08)}
+.pbd{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .7rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.bg1{background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);color:var(--accent)}
+.bg2{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);color:var(--accent2)}
+.bg3{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:var(--accent3)}
+.ptt{font-family:var(--fd);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;margin-bottom:.8rem}
+.pds{font-size:12.5px;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;max-width:620px}
+.pst{display:flex;flex-wrap:wrap;gap:.45rem}
+.sp{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:.25rem .65rem;border-radius:4px;letter-spacing:.04em}
+.pa{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;min-width:140px}
+.plb{display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);text-decoration:none;font-size:11px;letter-spacing:.06em;padding:.5rem 1rem;border:1px solid rgba(110,231,183,.2);border-radius:6px;transition:all .3s ease;white-space:nowrap}
+.plb:hover{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.4);transform:translateX(-3px)}
+.plb.sec2{color:var(--muted);border-color:var(--border)}
+.plb.sec2:hover{color:var(--text);border-color:var(--border2)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(44px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.up{opacity:1;transform:none}
+
+/* MODAL */
+#mo{position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.86);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;visibility:hidden;transition:all .4s ease}
+#mo.open{opacity:1;visibility:visible}
+.mb{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:3rem;max-width:680px;width:100%;position:relative;transform:translateY(30px) scale(.97);transition:all .4s var(--ease);max-height:90vh;overflow-y:auto}
+#mo.open .mb{transform:translateY(0) scale(1)}
+.mc{position:absolute;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .3s ease}
+.mc:hover{color:var(--text);border-color:var(--border2)}
+.mt{font-family:var(--fd);font-weight:800;font-size:1.8rem;letter-spacing:-.02em;margin-bottom:1rem}
+.md{font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:1.5rem}
+.mfh{font-family:var(--fd);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem;margin-top:1.5rem}
+.mf{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.6rem;font-size:13px;color:var(--muted);line-height:1.6}
+.mf::before{content:'✦';color:var(--accent);font-size:.6rem;margin-top:5px;flex-shrink:0}
+.ms{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 2rem}
+.bp{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#050508;padding:.9rem 2.2rem;border-radius:8px;font-family:var(--fd);font-weight:700;font-size:12px;letter-spacing:.06em;text-decoration:none;border:none;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s ease}
+.bp:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(110,231,183,.28)}
+.bg-btn{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--border2);color:var(--text2);padding:.9rem 2.2rem;border-radius:8px;font-family:var(--fd);font-weight:600;font-size:12px;letter-spacing:.06em;text-decoration:none;transition:all .3s ease}
+.bg-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+
+@media(max-width:900px){header{padding:2rem}.sec{padding:4rem 2rem}.pi{grid-template-columns:1fr;gap:1.5rem}.pidx{font-size:2.2rem;min-width:auto}.pa{flex-direction:row;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<div id="noise"></div>
+<canvas id="pc"></canvas>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<header>
+  <a href="index.html" class="h-back">← Back to Home</a>
+  <div class="h-title">All Projects</div>
+</header>
+
+<section class="sec">
+  <div class="si">
+    <div class="pl">
+
+      <!-- Project 1 -->
+      <div class="pi rv" onclick="openModal('lms')">
+        <div class="pidx">01</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="ptt">Smart Learning Management System</h3>
+          <p class="pds">A comprehensive, enterprise-grade LMS with AI-powered chatbot, interactive dashboards, integrated job portal, role-based access control, course management, and real-time notifications — built end-to-end on the MERN stack.</p>
+          <div class="pst"><span class="sp">MongoDB</span><span class="sp">Express.js</span><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span><span class="sp">Chart.js</span></div>
+        </div>
+        <div class="pa">
+          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
+          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb" onclick="event.stopPropagation();openModal('lms')">Details →</span>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="pi rv" onclick="openModal('expense')">
+        <div class="pidx">02</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="ptt">Expense Tracker</h3>
+          <p class="pds">Smart personal finance app with real-time tracking, budget management, category-wise analytics, visual dashboards, CSV export, and full JWT authentication — designed for clarity and speed.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
+        </div>
+        <div class="pa">
+          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
+          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb" onclick="event.stopPropagation();openModal('expense')">Details →</span>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="pi rv" onclick="openModal('qr')">
+        <div class="pidx">03</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="ptt">QR-based Employee Authorization System</h3>
+          <p class="pds">Enterprise access control using dynamic, time-expiring QR codes. Includes real-time authorization, comprehensive audit logs, admin dashboard, and role-based permissions for secure workplace management.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">QR Code API</span><span class="sp">JWT</span><span class="sp">RBAC</span></div>
+        </div>
+        <div class="pa">
+          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
+          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb" onclick="event.stopPropagation();openModal('qr')">Details →</span>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="pi rv" onclick="openModal('ecom')">
+        <div class="pidx">04</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg1">Frontend</span></div>
+          <h3 class="ptt">E-Commerce Storefront</h3>
+          <p class="pds">A fully responsive, high-performance e-commerce frontend built with React. Features product filtering, shopping cart functionality, secure checkout simulation, and dynamic product loading.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Redux Toolkit</span><span class="sp">Tailwind CSS</span><span class="sp">Framer Motion</span></div>
+        </div>
+        <div class="pa">
+          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
+          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb" onclick="event.stopPropagation();openModal('ecom')">Details →</span>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="pi rv" onclick="openModal('ai')">
+        <div class="pidx">05</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="ptt">AI Document Analyzer</h3>
+          <p class="pds">An AI-powered tool leveraging Langchain to analyze, summarize, and answer questions based on uploaded PDF documents. Includes context-aware chat interface.</p>
+          <div class="pst"><span class="sp">Next.js</span><span class="sp">Node.js</span><span class="sp">Langchain</span><span class="sp">OpenAI API</span><span class="sp">Pinecone</span></div>
+        </div>
+        <div class="pa">
+          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
+          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb" onclick="event.stopPropagation();openModal('ai')">Details →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="mo" onclick="closeModalBg(event)">
+  <div class="mb">
+    <button class="mc" onclick="closeModal()">✕</button>
+    <div id="mc2"></div>
+  </div>
+</div>
+
+<script>
+/* REVEAL */
+const obs=new IntersectionObserver(ens=>{
+  ens.forEach(en=>{
+    if(en.isIntersecting){en.target.classList.add('up');obs.unobserve(en.target);}
+  });
+},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* CURSOR */
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let ccx=0,ccy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ccx=e.clientX;ccy=e.clientY;cur.style.transform=`translate(${ccx-5}px,${ccy-5}px)`;});
+(function ar(){rx+=(ccx-rx-17)*.1;ry+=(ccy-ry-17)*.1;curR.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(ar);})();
+
+/* Big cursor on project cards */
+document.querySelectorAll('.pi').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('big-cur'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('big-cur'));
+});
+
+/* Hover effects on links/buttons */
+document.querySelectorAll('a,button,.plb').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    document.body.classList.remove('big-cur');
+    cur.style.width='18px';cur.style.height='18px';
+    curR.style.width='50px';curR.style.height='50px';
+    curR.style.borderColor='rgba(110,231,183,.55)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cur.style.width='10px';cur.style.height='10px';
+    curR.style.width='34px';curR.style.height='34px';
+    curR.style.borderColor='rgba(110,231,183,.35)';
+  });
+});
+
+/* CANVAS PARTICLES */
+const cv=document.getElementById('pc'),cx2=cv.getContext('2d');
+let W,H,mx2=0,my2=0;
+function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+const cols=['110,231,183','129,140,248','244,114,182'];
+class P{
+  constructor(){this.init();}
+  init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*1.2+.3;this.a=Math.random()*.5+.1;this.c=cols[Math.floor(Math.random()*3)];this.life=0;this.ml=200+Math.random()*400;}
+  update(){
+    this.x+=this.vx;this.y+=this.vy;this.life++;
+    const dx=mx2-this.x,dy=my2-this.y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<130){this.vx-=dx/d*.014;this.vy-=dy/d*.014;}
+    this.vx*=.99;this.vy*=.99;
+    if(this.life>this.ml||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.init();
+  }
+  draw(){cx2.beginPath();cx2.arc(this.x,this.y,this.r,0,Math.PI*2);cx2.fillStyle=`rgba(${this.c},${this.a*Math.sin(this.life/this.ml*Math.PI)})`;cx2.fill();}
+}
+const pts=Array.from({length:60},()=>new P());
+function drawConn(){
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<95){cx2.beginPath();cx2.moveTo(pts[i].x,pts[i].y);cx2.lineTo(pts[j].x,pts[j].y);cx2.strokeStyle=`rgba(110,231,183,${.045*(1-d/95)})`;cx2.lineWidth=.5;cx2.stroke();}
+  }
+}
+(function anim(){cx2.clearRect(0,0,W,H);drawConn();pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(anim);})();
+document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;});
+
+/* MODAL DATA */
+const mdata={
+  lms:{badge:'<span class="bdg bg1">✦ Featured Project</span>',title:'Smart Learning Management System',desc:'A full-featured, enterprise-grade LMS built entirely on the MERN stack. My most ambitious project — solving real challenges in online education with a comprehensive feature set that rivals commercial platforms.',features:['Interactive analytics dashboards with real-time data visualization using Chart.js','AI-powered student chatbot for instant Q&A and course guidance','Integrated job portal connecting students with employers and internship opportunities','Role-based access control — Student, Instructor, and Admin roles with granular permissions','Course creation, enrollment tracking, quiz system, and progress analytics','JWT authentication with secure refresh token rotation and bcrypt password hashing','Real-time notifications system with polling architecture','Fully responsive UI built with React.js and a custom component system'],stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','REST API','RBAC','bcrypt']},
+  expense:{badge:'<span class="bdg bg2">MERN Stack</span>',title:'Expense Tracker',desc:'A smart personal finance application that makes tracking money intuitive and insightful. Designed with a focus on clean UX, speed, and actionable data visualization for everyday budgeting.',features:['Real-time expense and income logging with instant UI updates','Category-wise breakdown with interactive pie charts and bar graphs','Monthly/yearly budget setting with visual overspend alerts','Full JWT authentication with bcrypt-hashed passwords','Filter and search transactions by date, category, and amount','Monthly trend analysis with comparative charts','Export transaction history to CSV for external use'],stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']},
+  qr:{badge:'<span class="bdg bg3">Security System</span>',title:'QR-based Employee Authorization',desc:'An enterprise access control system leveraging dynamic, time-expiring QR codes for secure, fast employee verification. Built for workplaces that need reliable, auditable, and scalable access management.',features:['Dynamic QR code generation with configurable time-expiry for enhanced security','Real-time authorization checks on scan — instant allow/deny response under 100ms','Comprehensive audit logs tracking all entry/exit events with timestamps','Admin dashboard for managing employees, departments, and access levels','Role-based access control with department-wise and zone-based permissions','Mobile-optimized scanner interface for security personnel use','Analytics on access patterns, peak times, and anomaly detection'],stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']},
+  ecom:{badge:'<span class="bdg bg1">Frontend</span>',title:'E-Commerce Storefront',desc:'A fully responsive, high-performance e-commerce frontend built with React. Designed to simulate a real shopping experience with smooth animations and a clean, conversion-focused UI.',features:['Dynamic product catalog with advanced filtering by category, price, and rating','Shopping cart with persistent state using Redux Toolkit','Checkout simulation with form validation and order confirmation flow','Framer Motion animations for page transitions and micro-interactions','Fully responsive — optimized for mobile, tablet, and desktop','Skeleton loaders and lazy-loaded images for fast perceived performance'],stack:['React.js','Redux Toolkit','Tailwind CSS','Framer Motion','React Router','Axios']},
+  ai:{badge:'<span class="bdg bg3">Gen AI</span>',title:'AI Document Analyzer',desc:'An AI-powered document analysis tool that lets users upload PDFs and have a context-aware conversation with their documents. Leverages Langchain RAG pipeline for accurate, cited responses.',features:['PDF upload and text extraction with chunking for optimal retrieval','Langchain RAG pipeline for context-aware question answering','Pinecone vector store for semantic similarity search','OpenAI GPT integration for natural language responses','Chat interface with conversation history and source citations','Streaming responses for real-time output experience'],stack:['Next.js','Node.js','Langchain','OpenAI API','Pinecone','TypeScript','Tailwind CSS']}
+};
+
+function openModal(id){
+  const d=mdata[id];
+  document.getElementById('mc2').innerHTML=`
+    <div style="margin-bottom:1rem">${d.badge}</div>
+    <h2 class="mt">${d.title}</h2>
+    <p class="md">${d.desc}</p>
+    <div class="mfh">Key Features</div>
+    ${d.features.map(f=>`<div class="mf">${f}</div>`).join('')}
+    <div class="mfh">Tech Stack</div>
+    <div class="ms">${d.stack.map(s=>`<span class="sp">${s}</span>`).join('')}</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="#" class="bp" style="font-size:12px"><span>View GitHub</span><span>↗</span></a>
+      <a href="#" class="bg-btn" style="font-size:12px">Live Demo →</a>
+    </div>`;
+  document.getElementById('mo').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('mo').classList.remove('open');document.body.style.overflow='';}
+function closeModalBg(e){if(e.target===document.getElementById('mo'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+
+</body>
+</html>
