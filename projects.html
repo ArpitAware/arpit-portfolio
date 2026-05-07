@@ -20,10 +20,12 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;overflow-x:hidden;cursor:none}
 a,button{cursor:none}
 ::selection{background:rgba(110,231,183,0.2);color:var(--accent)}
-::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent)}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent)}
 
 /* CURSOR */
-#cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8000;mix-blend-mode:screen;transition:width .3s,height .3s,background .3s;will-change:transform}
+#cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8000;mix-blend-mode:screen;transition:width .3s,height .3s;will-change:transform}
 #cur-r{width:34px;height:34px;border:1px solid rgba(110,231,183,0.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:7999;transition:width .3s,height .3s,border-color .3s;will-change:transform}
 .big-cur #cur{width:64px;height:64px}
 .big-cur #cur-r{width:64px;height:64px;border-color:transparent}
@@ -32,155 +34,337 @@ a,button{cursor:none}
 #noise{position:fixed;inset:0;z-index:4000;pointer-events:none;opacity:0.032;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/150px 150px}
 #pc{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* HEADER */
-header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:200}
-.h-back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:color .3s}
-.h-back:hover{color:var(--accent)}
-.h-title{font-family:var(--fd);font-weight:800;font-size:2rem;color:var(--text)}
+/* SCROLL PROGRESS */
+#sp{position:fixed;top:0;left:0;right:0;height:2px;z-index:500;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));transform-origin:left;transform:scaleX(0);transition:transform 0.08s linear}
 
-/* PROJECTS */
-.sec{padding:4rem 5rem;position:relative;z-index:1}
+/* HEADER */
+header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:rgba(5,5,8,0.82);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+.h-back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .3s;padding:.4rem 0}
+.h-back:hover{color:var(--accent)}
+.h-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;letter-spacing:-0.03em;color:var(--accent);text-decoration:none}
+.h-right{display:flex;align-items:center;gap:1.5rem}
+.hire-btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(110,231,183,.28);color:var(--accent);padding:.45rem 1rem;border-radius:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s;font-family:var(--fd);font-weight:600}
+.hire-btn:hover{background:rgba(110,231,183,.08);transform:translateY(-2px)}
+
+/* HERO BAND */
+.page-hero{padding:5rem 5rem 3rem;position:relative;z-index:1;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(110,231,183,.04) 0%,transparent 70%)}
+.ph-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.ph-label{display:inline-flex;align-items:center;gap:.6rem;border:1px solid rgba(110,231,183,.2);background:rgba(110,231,183,.04);padding:.4rem 1rem;border-radius:100px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;opacity:0;animation:su .8s var(--ease) .1s forwards}
+.ph-title{font-family:var(--fd);font-weight:800;font-size:clamp(2.5rem,7vw,6rem);line-height:.95;letter-spacing:-.04em;margin-bottom:1.2rem;opacity:0;animation:su .8s var(--ease) .25s forwards}
+.ph-title .hi{background:linear-gradient(110deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ph-sub{font-size:13px;color:var(--muted);line-height:1.8;max-width:500px;opacity:0;animation:su .8s var(--ease) .4s forwards}
+@keyframes su{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* FILTER BAR */
+.filter-bar{padding:0 5rem 2rem;position:relative;z-index:1}
+.fb-inner{max-width:1200px;margin:0 auto;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.fb-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-right:.4rem}
+.ftag{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .9rem;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--fb);font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:none;transition:all .3s ease}
+.ftag:hover{border-color:rgba(110,231,183,.3);color:var(--accent)}
+.ftag.active{border-color:rgba(110,231,183,.4);background:rgba(110,231,183,.07);color:var(--accent)}
+
+/* PROJECT GRID */
+.sec{padding:0 5rem 6rem;position:relative;z-index:1}
 .si{max-width:1200px;margin:0 auto}
-.pl{display:grid;grid-template-columns:1fr;gap:1.5rem}
-.pi{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.8rem 3rem;display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:none}
+.pl{display:flex;flex-direction:column;gap:1.2rem}
+
+/* PROJECT ITEM */
+.pi{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.4rem 2.8rem;display:grid;grid-template-columns:72px 1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:none}
 .pi::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(110,231,183,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s ease}
 .pi:hover::before{opacity:1}
-.pi:hover{border-color:rgba(110,231,183,.22);transform:translateY(-4px);box-shadow:0 30px 80px rgba(0,0,0,.5)}
-.pidx{font-family:var(--fd);font-weight:800;font-size:3.5rem;color:rgba(255,255,255,.04);line-height:1;user-select:none;min-width:80px;transition:color .4s ease}
-.pi:hover .pidx{color:rgba(110,231,183,.08)}
-.pbd{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
-.bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .7rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.pi:hover{border-color:rgba(110,231,183,.22);transform:translateY(-3px);box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.pi.ft{border-color:rgba(110,231,183,.12);background:linear-gradient(135deg,var(--surface),rgba(110,231,183,.015))}
+.pi.ft::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(110,231,183,.4),transparent)}
+
+.pidx{font-family:var(--fd);font-weight:800;font-size:2.8rem;color:rgba(255,255,255,.04);line-height:1;user-select:none;transition:color .4s ease;flex-shrink:0;width:72px;text-align:right}
+.pi:hover .pidx{color:rgba(110,231,183,.1)}
+
+.pb{min-width:0}
+.pbd{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
+.bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .65rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
 .bg1{background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);color:var(--accent)}
 .bg2{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);color:var(--accent2)}
 .bg3{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:var(--accent3)}
-.ptt{font-family:var(--fd);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;margin-bottom:.8rem}
-.pds{font-size:12.5px;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;max-width:620px}
-.pst{display:flex;flex-wrap:wrap;gap:.45rem}
-.sp{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:.25rem .65rem;border-radius:4px;letter-spacing:.04em}
-.pa{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;min-width:140px}
-.plb{display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);text-decoration:none;font-size:11px;letter-spacing:.06em;padding:.5rem 1rem;border:1px solid rgba(110,231,183,.2);border-radius:6px;transition:all .3s ease;white-space:nowrap}
-.plb:hover{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.4);transform:translateX(-3px)}
-.plb.sec2{color:var(--muted);border-color:var(--border)}
-.plb.sec2:hover{color:var(--text);border-color:var(--border2)}
+.ptt{font-family:var(--fd);font-weight:800;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pds{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pst{display:flex;flex-wrap:wrap;gap:.35rem}
+.sp{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:9.5px;padding:.2rem .55rem;border-radius:4px;letter-spacing:.04em}
+
+.pa{display:flex;flex-direction:column;gap:.6rem;align-items:flex-end;flex-shrink:0;min-width:110px}
+.plb{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:10px;letter-spacing:.06em;padding:.45rem .9rem;border-radius:6px;transition:all .3s ease;white-space:nowrap;border:1px solid rgba(110,231,183,.2);color:var(--accent)}
+.plb:hover{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.4);transform:translateX(-2px)}
+.plb.ghost{color:var(--muted);border-color:var(--border)}
+.plb.ghost:hover{color:var(--text);border-color:var(--border2)}
+.plb.detail{background:rgba(110,231,183,.06)}
+
+/* STATS BAR */
+.stats-bar{padding:0 5rem 4rem;position:relative;z-index:1}
+.sb-inner{max-width:1200px;margin:0 auto;display:flex;gap:1px;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border)}
+.sb-item{flex:1;background:var(--surface);padding:1.5rem 2rem;text-align:center}
+.sb-num{font-family:var(--fd);font-weight:800;font-size:2rem;color:var(--accent);line-height:1;margin-bottom:.3rem}
+.sb-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 
 /* REVEAL */
-.rv{opacity:0;transform:translateY(44px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .rv.up{opacity:1;transform:none}
 
 /* MODAL */
-#mo{position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.86);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:2rem;opacity:0;visibility:hidden;transition:all .4s ease}
+#mo{position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.88);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:all .4s ease;overflow-y:auto}
 #mo.open{opacity:1;visibility:visible}
-.mb{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:3rem;max-width:680px;width:100%;position:relative;transform:translateY(30px) scale(.97);transition:all .4s var(--ease);max-height:90vh;overflow-y:auto}
+.mb{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:2.5rem;max-width:700px;width:100%;position:relative;transform:translateY(30px) scale(.97);transition:all .4s var(--ease);margin:auto}
 #mo.open .mb{transform:translateY(0) scale(1)}
-.mc{position:absolute;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .3s ease}
+.mc{position:absolute;top:1.2rem;right:1.2rem;width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .3s ease;flex-shrink:0}
 .mc:hover{color:var(--text);border-color:var(--border2)}
-.mt{font-family:var(--fd);font-weight:800;font-size:1.8rem;letter-spacing:-.02em;margin-bottom:1rem}
-.md{font-size:13px;color:var(--muted);line-height:1.9;margin-bottom:1.5rem}
-.mfh{font-family:var(--fd);font-weight:700;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem;margin-top:1.5rem}
-.mf{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.6rem;font-size:13px;color:var(--muted);line-height:1.6}
-.mf::before{content:'✦';color:var(--accent);font-size:.6rem;margin-top:5px;flex-shrink:0}
-.ms{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 2rem}
-.bp{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#050508;padding:.9rem 2.2rem;border-radius:8px;font-family:var(--fd);font-weight:700;font-size:12px;letter-spacing:.06em;text-decoration:none;border:none;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s ease}
-.bp:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(110,231,183,.28)}
-.bg-btn{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--border2);color:var(--text2);padding:.9rem 2.2rem;border-radius:8px;font-family:var(--fd);font-weight:600;font-size:12px;letter-spacing:.06em;text-decoration:none;transition:all .3s ease}
-.bg-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+.mt2{font-family:var(--fd);font-weight:800;font-size:clamp(1.2rem,4vw,1.7rem);letter-spacing:-.02em;margin-bottom:.8rem;padding-right:3rem;line-height:1.2}
+.mdesc{font-size:12.5px;color:var(--muted);line-height:1.9;margin-bottom:1.2rem}
+.mfh{font-family:var(--fd);font-weight:700;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.7rem;margin-top:1.4rem}
+.mf{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:.5rem;font-size:12px;color:var(--muted);line-height:1.65}
+.mf::before{content:'✦';color:var(--accent);font-size:.55rem;margin-top:4px;flex-shrink:0}
+.ms{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0 1.8rem}
+.modal-btns{display:flex;gap:.8rem;flex-wrap:wrap}
+.modal-btns a{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:8px;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.06em;text-decoration:none;transition:all .3s ease}
+.modal-btns .mbp{background:var(--accent);color:#050508}
+.modal-btns .mbp:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(110,231,183,.3)}
+.modal-btns .mbg{border:1px solid var(--border2);color:var(--text2)}
+.modal-btns .mbg:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
 
-@media(max-width:900px){header{padding:2rem}.sec{padding:4rem 2rem}.pi{grid-template-columns:1fr;gap:1.5rem}.pidx{font-size:2.2rem;min-width:auto}.pa{flex-direction:row;align-items:flex-start}}
+/* BACK TO TOP */
+#btt{position:fixed;bottom:2rem;right:2rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);color:var(--accent);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;opacity:0;transform:translateY(12px);transition:all .4s var(--ease)}
+#btt.show{opacity:1;transform:translateY(0)}
+#btt:hover{background:rgba(110,231,183,.1);border-color:rgba(110,231,183,.35);transform:translateY(-3px)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){
+  .pi{grid-template-columns:60px 1fr auto;gap:1.5rem;padding:2rem}
+  .pidx{font-size:2.2rem;width:60px}
+}
+@media(max-width:900px){
+  header{padding:1.2rem 1.5rem}
+  .page-hero{padding:3rem 1.5rem 2rem}
+  .filter-bar{padding:0 1.5rem 1.5rem}
+  .sec{padding:0 1.5rem 4rem}
+  .stats-bar{padding:0 1.5rem 3rem}
+  .sb-inner{flex-wrap:wrap;border-radius:12px}
+  .sb-item{flex:1 1 45%}
+  .pi{grid-template-columns:1fr;gap:1rem;padding:1.6rem}
+  .pidx{font-size:1.8rem;width:auto;text-align:left}
+  .pa{flex-direction:row;align-items:flex-start;flex-wrap:wrap;min-width:0}
+  .ptt{white-space:normal}
+  .pds{-webkit-line-clamp:3}
+}
+@media(max-width:640px){
+  header{padding:1rem}
+  .h-right .hire-btn{display:none}
+  .page-hero{padding:2rem 1rem 1.5rem}
+  .ph-title{font-size:clamp(2rem,10vw,3.5rem)}
+  .filter-bar{padding:0 1rem 1.5rem}
+  .sec{padding:0 1rem 3rem}
+  .stats-bar{padding:0 1rem 2rem}
+  .sb-inner{flex-direction:column}
+  .sb-item{flex:1 1 100%}
+  .pi{padding:1.2rem}
+  .pa{gap:.4rem}
+  .plb{font-size:9px;padding:.38rem .75rem}
+  .mb{padding:1.4rem;border-radius:16px;margin:0}
+  .mt2{font-size:1.1rem}
+  .modal-btns{flex-direction:column}
+  .modal-btns a{justify-content:center}
+  #mo{align-items:flex-start;padding:.5rem}
+}
+@media(max-width:400px){
+  .pi{padding:1rem}
+  .fb-inner{gap:.4rem}
+  .ftag{font-size:9px;padding:.35rem .7rem}
+}
 </style>
 </head>
 <body>
 
 <div id="noise"></div>
 <canvas id="pc"></canvas>
+<div id="sp"></div>
 <div id="cur"></div>
 <div id="cur-r"></div>
 
+<!-- HEADER -->
 <header>
   <a href="index.html" class="h-back">← Back to Home</a>
-  <div class="h-title">All Projects</div>
+  <a href="index.html" class="h-logo">AA.</a>
+  <div class="h-right">
+    <a href="index.html#contact" class="hire-btn">Hire Me →</a>
+  </div>
 </header>
 
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="ph-inner">
+    <div class="ph-label"><span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;animation:pd 2s ease infinite"></span> 9 Projects Total</div>
+    <h1 class="ph-title">All <span class="hi">Projects</span></h1>
+    <p class="ph-sub">Every project is a real-world solution built with focus on UX, performance, and clean code.</p>
+  </div>
+</div>
+<style>@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(110,231,183,.5)}50%{box-shadow:0 0 0 7px rgba(110,231,183,0)}}</style>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="fb-inner">
+    <span class="fb-label">Filter:</span>
+    <button class="ftag active" onclick="filterProjects('all',this)">All</button>
+    <button class="ftag" onclick="filterProjects('mern',this)">MERN</button>
+    <button class="ftag" onclick="filterProjects('ai',this)">AI / Gen AI</button>
+    <button class="ftag" onclick="filterProjects('frontend',this)">Frontend</button>
+    <button class="ftag" onclick="filterProjects('security',this)">Security</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="sb-inner">
+    <div class="sb-item"><div class="sb-num">9</div><div class="sb-label">Total Projects</div></div>
+    <div class="sb-item"><div class="sb-num">3</div><div class="sb-label">AI Powered</div></div>
+    <div class="sb-item"><div class="sb-num">5</div><div class="sb-label">Full Stack</div></div>
+    <div class="sb-item"><div class="sb-num">10+</div><div class="sb-label">Technologies</div></div>
+  </div>
+</div>
+
+<!-- PROJECTS LIST -->
 <section class="sec">
   <div class="si">
-    <div class="pl">
+    <div class="pl" id="projectList">
 
-      <!-- Project 1 -->
-      <div class="pi rv" onclick="openModal('lms')">
+      <!-- 01 NeuralLearn -->
+      <div class="pi ft rv" data-tags="mern,ai" onclick="openModal('neural')">
         <div class="pidx">01</div>
         <div class="pb">
-          <div class="pbd"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">Smart Learning Management System</h3>
-          <p class="pds">A comprehensive, enterprise-grade LMS with AI-powered chatbot, interactive dashboards, integrated job portal, role-based access control, course management, and real-time notifications — built end-to-end on the MERN stack.</p>
+          <div class="pbd"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
+          <h3 class="ptt">NeuralLearn — AI Powered LMS</h3>
+          <p class="pds">Enterprise-grade LMS with AI chatbot, interactive dashboards, job portal, role-based access control, course management, and real-time notifications — built end-to-end on the MERN stack.</p>
           <div class="pst"><span class="sp">MongoDB</span><span class="sp">Express.js</span><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span><span class="sp">Chart.js</span></div>
         </div>
         <div class="pa">
-          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
-          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb" onclick="event.stopPropagation();openModal('lms')">Details →</span>
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('neural')">Details →</span>
         </div>
       </div>
 
-      <!-- Project 2 -->
-      <div class="pi rv" onclick="openModal('expense')">
+      <!-- 02 SpendWise -->
+      <div class="pi rv" data-tags="mern" onclick="openModal('spendwise')">
         <div class="pidx">02</div>
         <div class="pb">
           <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">Expense Tracker</h3>
-          <p class="pds">Smart personal finance app with real-time tracking, budget management, category-wise analytics, visual dashboards, CSV export, and full JWT authentication — designed for clarity and speed.</p>
+          <h3 class="ptt">SpendWise — Smart Expense Tracker</h3>
+          <p class="pds">Smart personal finance app with real-time tracking, budget management, category-wise analytics, visual dashboards, CSV export, and full JWT authentication.</p>
           <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
         </div>
         <div class="pa">
-          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
-          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb" onclick="event.stopPropagation();openModal('expense')">Details →</span>
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('spendwise')">Details →</span>
         </div>
       </div>
 
-      <!-- Project 3 -->
-      <div class="pi rv" onclick="openModal('qr')">
+      <!-- 03 AI Career Copilot -->
+      <div class="pi rv" data-tags="ai,mern" onclick="openModal('career')">
         <div class="pidx">03</div>
         <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">QR-based Employee Authorization System</h3>
-          <p class="pds">Enterprise access control using dynamic, time-expiring QR codes. Includes real-time authorization, comprehensive audit logs, admin dashboard, and role-based permissions for secure workplace management.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">QR Code API</span><span class="sp">JWT</span><span class="sp">RBAC</span></div>
+          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="ptt">AI Career Copilot</h3>
+          <p class="pds">AI-powered career assistant that helps users build ATS-optimized resumes, prep for interviews, and discover job opportunities using Langchain agents and LLMs.</p>
+          <div class="pst"><span class="sp">Next.js</span><span class="sp">Langchain</span><span class="sp">OpenAI API</span><span class="sp">MongoDB</span><span class="sp">JWT</span></div>
         </div>
         <div class="pa">
-          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
-          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb" onclick="event.stopPropagation();openModal('qr')">Details →</span>
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('career')">Details →</span>
         </div>
       </div>
 
-      <!-- Project 4 -->
-      <div class="pi rv" onclick="openModal('ecom')">
+      <!-- 04 Personal Portfolio -->
+      <div class="pi rv" data-tags="frontend" onclick="openModal('portfolio')">
         <div class="pidx">04</div>
         <div class="pb">
-          <div class="pbd"><span class="bdg bg1">Frontend</span></div>
-          <h3 class="ptt">E-Commerce Storefront</h3>
-          <p class="pds">A fully responsive, high-performance e-commerce frontend built with React. Features product filtering, shopping cart functionality, secure checkout simulation, and dynamic product loading.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Redux Toolkit</span><span class="sp">Tailwind CSS</span><span class="sp">Framer Motion</span></div>
+          <div class="pbd"><span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span></div>
+          <h3 class="ptt">Personal Portfolio Website</h3>
+          <p class="pds">This very portfolio — a custom-designed, fully animated developer showcase with particle canvas, custom cursor, glitch effects, scroll animations, and a responsive layout.</p>
+          <div class="pst"><span class="sp">HTML5</span><span class="sp">CSS3</span><span class="sp">Vanilla JS</span><span class="sp">Canvas API</span><span class="sp">EmailJS</span></div>
         </div>
         <div class="pa">
-          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
-          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb" onclick="event.stopPropagation();openModal('ecom')">Details →</span>
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('portfolio')">Details →</span>
         </div>
       </div>
 
-      <!-- Project 5 -->
-      <div class="pi rv" onclick="openModal('ai')">
+      <!-- 05 Resume Analyzer -->
+      <div class="pi rv" data-tags="ai,mern" onclick="openModal('resume')">
         <div class="pidx">05</div>
         <div class="pb">
           <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">AI Document Analyzer</h3>
-          <p class="pds">An AI-powered tool leveraging Langchain to analyze, summarize, and answer questions based on uploaded PDF documents. Includes context-aware chat interface.</p>
-          <div class="pst"><span class="sp">Next.js</span><span class="sp">Node.js</span><span class="sp">Langchain</span><span class="sp">OpenAI API</span><span class="sp">Pinecone</span></div>
+          <h3 class="ptt">Resume Analyzer</h3>
+          <p class="pds">AI-powered resume review tool that parses uploaded PDFs, scores them against job descriptions, highlights gaps, and provides actionable improvement suggestions powered by Langchain RAG.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">Langchain</span><span class="sp">OpenAI</span><span class="sp">Pinecone</span><span class="sp">MongoDB</span></div>
         </div>
         <div class="pa">
-          <a href="#" class="plb" onclick="event.stopPropagation()">Live Demo ↗</a>
-          <a href="#" class="plb sec2" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb" onclick="event.stopPropagation();openModal('ai')">Details →</span>
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('resume')">Details →</span>
+        </div>
+      </div>
+
+      <!-- 06 Expendify -->
+      <div class="pi rv" data-tags="mern" onclick="openModal('expendify')">
+        <div class="pidx">06</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="ptt">Expendify — Group Expense Splitter</h3>
+          <p class="pds">A collaborative expense management app for groups and trips. Split bills intelligently, track who owes whom, settle debts, and visualize group spending with real-time sync.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Socket.io</span><span class="sp">JWT</span></div>
+        </div>
+        <div class="pa">
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('expendify')">Details →</span>
+        </div>
+      </div>
+
+      <!-- 07 QR Auth System -->
+      <div class="pi rv" data-tags="security,mern" onclick="openModal('qr')">
+        <div class="pidx">07</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="ptt">QR-Based Employee Authorization</h3>
+          <p class="pds">Enterprise access control using dynamic, time-expiring QR codes. Includes real-time authorization, audit logs, admin dashboard, and role-based permissions for secure workplace management.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">QR Code API</span><span class="sp">JWT</span><span class="sp">RBAC</span></div>
+        </div>
+        <div class="pa">
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('qr')">Details →</span>
+        </div>
+      </div>
+
+      <!-- 08 Task Management App -->
+      <div class="pi rv" data-tags="mern,frontend" onclick="openModal('task')">
+        <div class="pidx">08</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="ptt">ProTask — Kanban Task Manager</h3>
+          <p class="pds">A beautiful, drag-and-drop Kanban board for team task management. Features custom workflows, priority tagging, deadline reminders, and real-time collaboration.</p>
+          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Socket.io</span><span class="sp">DnD Kit</span><span class="sp">JWT</span></div>
+        </div>
+        <div class="pa">
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('task')">Details →</span>
+        </div>
+      </div>
+
+      <!-- 09 AI Chat App -->
+      <div class="pi rv" data-tags="ai,frontend" onclick="openModal('chat')">
+        <div class="pidx">09</div>
+        <div class="pb">
+          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span></div>
+          <h3 class="ptt">NexusChat — AI Chat Interface</h3>
+          <p class="pds">A sleek, feature-rich chat interface for interacting with large language models. Supports multi-session conversations, message history, model switching, and markdown rendering.</p>
+          <div class="pst"><span class="sp">Next.js</span><span class="sp">OpenAI API</span><span class="sp">Tailwind CSS</span><span class="sp">MongoDB</span><span class="sp">Streaming</span></div>
+        </div>
+        <div class="pa">
+          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
+          <span class="plb detail" onclick="event.stopPropagation();openModal('chat')">Details →</span>
         </div>
       </div>
 
@@ -196,100 +380,155 @@ header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-b
   </div>
 </div>
 
+<button id="btt" aria-label="Back to top">↑</button>
+
 <script>
-/* REVEAL */
-const obs=new IntersectionObserver(ens=>{
-  ens.forEach(en=>{
-    if(en.isIntersecting){en.target.classList.add('up');obs.unobserve(en.target);}
-  });
-},{threshold:.12});
-document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+/* SCROLL PROGRESS & BACK TO TOP */
+window.addEventListener('scroll',()=>{
+  document.getElementById('sp').style.transform=`scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;
+  document.getElementById('btt').classList.toggle('show',window.scrollY>400);
+},{passive:true});
+document.getElementById('btt').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* CANVAS */
+const cv=document.getElementById('pc'),cx2=cv.getContext('2d');
+let W,H,mx2=0,my2=0;
+function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+const cols=['110,231,183','129,140,248','244,114,182'];
+class P{constructor(){this.init();}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.r=Math.random()*1+.3;this.a=Math.random()*.4+.1;this.c=cols[Math.floor(Math.random()*3)];this.life=0;this.ml=300+Math.random()*400;}update(){this.x+=this.vx;this.y+=this.vy;this.life++;const dx=mx2-this.x,dy=my2-this.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){this.vx-=dx/d*.012;this.vy-=dy/d*.012;}this.vx*=.99;this.vy*=.99;if(this.life>this.ml||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.init();}draw(){cx2.beginPath();cx2.arc(this.x,this.y,this.r,0,Math.PI*2);cx2.fillStyle=`rgba(${this.c},${this.a*Math.sin(this.life/this.ml*Math.PI)})`;cx2.fill();}}
+const pts=Array.from({length:70},()=>new P());
+function drawConn(){for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<90){cx2.beginPath();cx2.moveTo(pts[i].x,pts[i].y);cx2.lineTo(pts[j].x,pts[j].y);cx2.strokeStyle=`rgba(110,231,183,${.04*(1-d/90)})`;cx2.lineWidth=.5;cx2.stroke();}}}
+(function anim(){cx2.clearRect(0,0,W,H);drawConn();pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(anim);})();
+document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;});
 
 /* CURSOR */
 const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
 let ccx=0,ccy=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{ccx=e.clientX;ccy=e.clientY;cur.style.transform=`translate(${ccx-5}px,${ccy-5}px)`;});
 (function ar(){rx+=(ccx-rx-17)*.1;ry+=(ccy-ry-17)*.1;curR.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(ar);})();
-
-/* Big cursor on project cards */
 document.querySelectorAll('.pi').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('big-cur'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('big-cur'));
 });
-
-/* Hover effects on links/buttons */
-document.querySelectorAll('a,button,.plb').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{
-    document.body.classList.remove('big-cur');
-    cur.style.width='18px';cur.style.height='18px';
-    curR.style.width='50px';curR.style.height='50px';
-    curR.style.borderColor='rgba(110,231,183,.55)';
-  });
-  el.addEventListener('mouseleave',()=>{
-    cur.style.width='10px';cur.style.height='10px';
-    curR.style.width='34px';curR.style.height='34px';
-    curR.style.borderColor='rgba(110,231,183,.35)';
-  });
+document.querySelectorAll('a,button,.plb,.ftag').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{document.body.classList.remove('big-cur');cur.style.width='18px';cur.style.height='18px';curR.style.width='50px';curR.style.height='50px';curR.style.borderColor='rgba(110,231,183,.55)';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='34px';curR.style.height='34px';curR.style.borderColor='rgba(110,231,183,.35)';});
 });
 
-/* CANVAS PARTICLES */
-const cv=document.getElementById('pc'),cx2=cv.getContext('2d');
-let W,H,mx2=0,my2=0;
-function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
-rsz();window.addEventListener('resize',rsz);
-const cols=['110,231,183','129,140,248','244,114,182'];
-class P{
-  constructor(){this.init();}
-  init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*1.2+.3;this.a=Math.random()*.5+.1;this.c=cols[Math.floor(Math.random()*3)];this.life=0;this.ml=200+Math.random()*400;}
-  update(){
-    this.x+=this.vx;this.y+=this.vy;this.life++;
-    const dx=mx2-this.x,dy=my2-this.y,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<130){this.vx-=dx/d*.014;this.vy-=dy/d*.014;}
-    this.vx*=.99;this.vy*=.99;
-    if(this.life>this.ml||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.init();
-  }
-  draw(){cx2.beginPath();cx2.arc(this.x,this.y,this.r,0,Math.PI*2);cx2.fillStyle=`rgba(${this.c},${this.a*Math.sin(this.life/this.ml*Math.PI)})`;cx2.fill();}
+/* REVEAL */
+const obs=new IntersectionObserver(ens=>{
+  ens.forEach((en,i)=>{
+    if(en.isIntersecting){
+      setTimeout(()=>en.target.classList.add('up'),i*40);
+      obs.unobserve(en.target);
+    }
+  });
+},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* FILTER */
+function filterProjects(tag,btn){
+  document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pi').forEach(p=>{
+    const tags=p.dataset.tags||'';
+    const show=tag==='all'||tags.includes(tag);
+    p.style.transition='opacity .4s ease, transform .4s ease';
+    if(show){p.style.opacity='1';p.style.pointerEvents='auto';p.style.display='';}
+    else{p.style.opacity='0';p.style.pointerEvents='none';setTimeout(()=>{if(!tags.includes(tag)&&btn.classList.contains('active'))p.style.display='none';},400);}
+  });
 }
-const pts=Array.from({length:60},()=>new P());
-function drawConn(){
-  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
-    if(d<95){cx2.beginPath();cx2.moveTo(pts[i].x,pts[i].y);cx2.lineTo(pts[j].x,pts[j].y);cx2.strokeStyle=`rgba(110,231,183,${.045*(1-d/95)})`;cx2.lineWidth=.5;cx2.stroke();}
-  }
-}
-(function anim(){cx2.clearRect(0,0,W,H);drawConn();pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(anim);})();
-document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;});
 
 /* MODAL DATA */
 const mdata={
-  lms:{badge:'<span class="bdg bg1">✦ Featured Project</span>',title:'Smart Learning Management System',desc:'A full-featured, enterprise-grade LMS built entirely on the MERN stack. My most ambitious project — solving real challenges in online education with a comprehensive feature set that rivals commercial platforms.',features:['Interactive analytics dashboards with real-time data visualization using Chart.js','AI-powered student chatbot for instant Q&A and course guidance','Integrated job portal connecting students with employers and internship opportunities','Role-based access control — Student, Instructor, and Admin roles with granular permissions','Course creation, enrollment tracking, quiz system, and progress analytics','JWT authentication with secure refresh token rotation and bcrypt password hashing','Real-time notifications system with polling architecture','Fully responsive UI built with React.js and a custom component system'],stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','REST API','RBAC','bcrypt']},
-  expense:{badge:'<span class="bdg bg2">MERN Stack</span>',title:'Expense Tracker',desc:'A smart personal finance application that makes tracking money intuitive and insightful. Designed with a focus on clean UX, speed, and actionable data visualization for everyday budgeting.',features:['Real-time expense and income logging with instant UI updates','Category-wise breakdown with interactive pie charts and bar graphs','Monthly/yearly budget setting with visual overspend alerts','Full JWT authentication with bcrypt-hashed passwords','Filter and search transactions by date, category, and amount','Monthly trend analysis with comparative charts','Export transaction history to CSV for external use'],stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']},
-  qr:{badge:'<span class="bdg bg3">Security System</span>',title:'QR-based Employee Authorization',desc:'An enterprise access control system leveraging dynamic, time-expiring QR codes for secure, fast employee verification. Built for workplaces that need reliable, auditable, and scalable access management.',features:['Dynamic QR code generation with configurable time-expiry for enhanced security','Real-time authorization checks on scan — instant allow/deny response under 100ms','Comprehensive audit logs tracking all entry/exit events with timestamps','Admin dashboard for managing employees, departments, and access levels','Role-based access control with department-wise and zone-based permissions','Mobile-optimized scanner interface for security personnel use','Analytics on access patterns, peak times, and anomaly detection'],stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']},
-  ecom:{badge:'<span class="bdg bg1">Frontend</span>',title:'E-Commerce Storefront',desc:'A fully responsive, high-performance e-commerce frontend built with React. Designed to simulate a real shopping experience with smooth animations and a clean, conversion-focused UI.',features:['Dynamic product catalog with advanced filtering by category, price, and rating','Shopping cart with persistent state using Redux Toolkit','Checkout simulation with form validation and order confirmation flow','Framer Motion animations for page transitions and micro-interactions','Fully responsive — optimized for mobile, tablet, and desktop','Skeleton loaders and lazy-loaded images for fast perceived performance'],stack:['React.js','Redux Toolkit','Tailwind CSS','Framer Motion','React Router','Axios']},
-  ai:{badge:'<span class="bdg bg3">Gen AI</span>',title:'AI Document Analyzer',desc:'An AI-powered document analysis tool that lets users upload PDFs and have a context-aware conversation with their documents. Leverages Langchain RAG pipeline for accurate, cited responses.',features:['PDF upload and text extraction with chunking for optimal retrieval','Langchain RAG pipeline for context-aware question answering','Pinecone vector store for semantic similarity search','OpenAI GPT integration for natural language responses','Chat interface with conversation history and source citations','Streaming responses for real-time output experience'],stack:['Next.js','Node.js','Langchain','OpenAI API','Pinecone','TypeScript','Tailwind CSS']}
+  neural:{
+    badge:'<span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span>',
+    title:'NeuralLearn — AI Powered LMS',
+    desc:'A full-featured, enterprise-grade LMS built entirely on the MERN stack with AI capabilities. My most ambitious project — solving real challenges in online education with a comprehensive feature set that rivals commercial platforms.',
+    features:['Interactive analytics dashboards with real-time data visualization using Chart.js','AI-powered student chatbot for instant Q&A and course guidance','Integrated job portal connecting students with employers and internship opportunities','Role-based access control — Student, Instructor, and Admin roles with granular permissions','Course creation, enrollment tracking, quiz system, and progress analytics','JWT authentication with secure refresh token rotation and bcrypt password hashing','Real-time notifications system with polling architecture','Fully responsive UI with custom React component system'],
+    stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','REST API','RBAC','bcrypt']
+  },
+  spendwise:{
+    badge:'<span class="bdg bg2">MERN Stack</span>',
+    title:'SpendWise — Smart Expense Tracker',
+    desc:'A smart personal finance application that makes tracking money intuitive and insightful. Designed with a focus on clean UX, speed, and actionable data visualization for everyday budgeting.',
+    features:['Real-time expense and income logging with instant UI updates','Category-wise breakdown with interactive pie charts and bar graphs','Monthly/yearly budget setting with visual overspend alerts','Full JWT authentication with bcrypt-hashed passwords','Filter and search transactions by date, category, and amount','Monthly trend analysis with comparative charts','Export transaction history to CSV for external use'],
+    stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']
+  },
+  career:{
+    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',
+    title:'AI Career Copilot',
+    desc:'An AI-powered career assistant that helps users navigate their job search. Uses Langchain agents and LLMs to generate tailored resumes, practice interview answers, and discover opportunities.',
+    features:['AI resume builder with ATS optimization powered by Langchain agents','Interview prep module with role-specific questions and AI-generated feedback','Job opportunity discovery with smart filtering and personalization','Context-aware career advice based on user profile and goals','Conversation history with full multi-turn chat interface','PDF resume export with clean, professional formatting','Stored sessions and conversation history via MongoDB'],
+    stack:['Next.js','Node.js','Langchain','OpenAI API','MongoDB','JWT','Tailwind CSS']
+  },
+  portfolio:{
+    badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span>',
+    title:'Personal Portfolio Website',
+    desc:'A meticulously designed developer portfolio showcasing skills, projects, and personality. Built from scratch with vanilla HTML/CSS/JS featuring rich animations and interactive elements.',
+    features:['Custom WebGL-style particle canvas with mouse interaction and connections','Glitch text effect and gradient animations on hero section','Intersection Observer-powered scroll reveal system','Custom cursor with magnetic effects and blend-mode mixing','Smooth typing animation with multiple role cycling','Skill bars, ring charts, and animated stat counters','Fully responsive across all screen sizes','EmailJS-powered contact form with real-time feedback'],
+    stack:['HTML5','CSS3','Vanilla JS','Canvas API','EmailJS','Intersection Observer API','CSS Animations']
+  },
+  resume:{
+    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',
+    title:'Resume Analyzer',
+    desc:'An AI-powered resume review tool that gives job seekers actionable, data-driven feedback. Upload a PDF resume and get instant scoring, gap analysis, and specific improvement suggestions powered by Langchain RAG.',
+    features:['PDF upload and intelligent text extraction with chunking strategy','Langchain RAG pipeline for context-aware resume analysis','Job description matching with skills gap identification','ATS compatibility scoring with specific keyword suggestions','Section-by-section feedback on summary, experience, and skills','Pinecone vector store for semantic similarity matching','Export improved resume suggestions as a structured report'],
+    stack:['React.js','Node.js','Langchain','OpenAI API','Pinecone','MongoDB','JWT','PDF.js']
+  },
+  expendify:{
+    badge:'<span class="bdg bg2">MERN Stack</span>',
+    title:'Expendify — Group Expense Splitter',
+    desc:'A collaborative expense management app designed for groups, roommates, and trips. Track shared costs, split bills intelligently, and settle debts with real-time syncing across all group members.',
+    features:['Create groups and invite members via email or link','Log shared expenses with flexible splitting options (equal, percentage, custom)','Real-time debt tracking — who owes who and how much','Settlement suggestions to minimize the number of transactions','Visual group spending breakdown with category charts','Real-time updates via Socket.io — everyone sees changes instantly','Push notifications for new expense additions and settlements'],
+    stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','JWT','bcrypt','Chart.js']
+  },
+  qr:{
+    badge:'<span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span>',
+    title:'QR-Based Employee Authorization',
+    desc:'An enterprise access control system leveraging dynamic, time-expiring QR codes for secure, fast employee verification. Built for workplaces that need reliable, auditable, and scalable access management.',
+    features:['Dynamic QR code generation with configurable time-expiry for enhanced security','Real-time authorization checks on scan — instant allow/deny response under 100ms','Comprehensive audit logs tracking all entry/exit events with timestamps','Admin dashboard for managing employees, departments, and access levels','Role-based access control with department-wise and zone-based permissions','Mobile-optimized scanner interface for security personnel use','Analytics on access patterns, peak times, and anomaly detection'],
+    stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']
+  },
+  task:{
+    badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span>',
+    title:'ProTask — Kanban Task Manager',
+    desc:'A beautiful, drag-and-drop Kanban board inspired by Notion and Linear. Built for teams and individuals who need a clean, fast, and flexible task management experience.',
+    features:['Drag-and-drop task cards across customizable workflow columns','Priority tags, labels, due dates, and assignee management','Real-time collaboration — changes reflect instantly for all team members via Socket.io','Sub-tasks, file attachments, and inline commenting on cards','Keyboard shortcuts for power users and fast navigation','Board, list, and timeline view modes','Activity log for each task and board-level changelog'],
+    stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','DnD Kit','JWT','Framer Motion']
+  },
+  chat:{
+    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span>',
+    title:'NexusChat — AI Chat Interface',
+    desc:'A sleek, production-quality chat interface for conversing with large language models. Designed for clarity, speed, and a great user experience — think a polished alternative to ChatGPT.',
+    features:['Multi-session conversation management with persistent history','Streaming responses for real-time output as the model generates','Markdown rendering with syntax-highlighted code blocks','Model switching between GPT-4, GPT-3.5, and other providers','System prompt customization for different personas and use cases','Conversation export as markdown or PDF','Dark/light mode and font size accessibility settings'],
+    stack:['Next.js','OpenAI API','MongoDB','Tailwind CSS','Streaming API','JWT','Marked.js']
+  }
 };
 
 function openModal(id){
   const d=mdata[id];
+  if(!d)return;
   document.getElementById('mc2').innerHTML=`
-    <div style="margin-bottom:1rem">${d.badge}</div>
-    <h2 class="mt">${d.title}</h2>
-    <p class="md">${d.desc}</p>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">${d.badge}</div>
+    <h2 class="mt2">${d.title}</h2>
+    <p class="mdesc">${d.desc}</p>
     <div class="mfh">Key Features</div>
     ${d.features.map(f=>`<div class="mf">${f}</div>`).join('')}
     <div class="mfh">Tech Stack</div>
     <div class="ms">${d.stack.map(s=>`<span class="sp">${s}</span>`).join('')}</div>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap">
-      <a href="#" class="bp" style="font-size:12px"><span>View GitHub</span><span>↗</span></a>
-      <a href="#" class="bg-btn" style="font-size:12px">Live Demo →</a>
+    <div class="modal-btns">
+      <a href="https://github.com/ArpitAware" target="_blank" class="mbp">View GitHub ↗</a>
+      <a href="#" class="mbg">Live Demo →</a>
     </div>`;
   document.getElementById('mo').classList.add('open');
   document.body.style.overflow='hidden';
+  document.getElementById('mo').scrollTop=0;
 }
 function closeModal(){document.getElementById('mo').classList.remove('open');document.body.style.overflow='';}
 function closeModalBg(e){if(e.target===document.getElementById('mo'))closeModal();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 </script>
-
 </body>
 </html>
