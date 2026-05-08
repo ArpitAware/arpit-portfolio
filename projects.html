@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>All Projects — Arpit Aware</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236ee7b7'/><stop offset='100%25' stop-color='%23818cf8'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><rect x='2' y='2' width='28' height='28' rx='6' fill='%23050508'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='900' font-size='16' fill='%236ee7b7'>AA</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -13,108 +15,121 @@
   --border:rgba(255,255,255,0.055);--border2:rgba(255,255,255,0.1);
   --accent:#6ee7b7;--accent2:#818cf8;--accent3:#f472b6;
   --text:#e8e8f0;--text2:#a0a0b4;--muted:#5a5a70;
-  --fd:'Syne',sans-serif;--fb:'DM Mono',monospace;--fs:'Instrument Serif',serif;
+  --fd:'Syne',sans-serif;--fb:'DM Mono',monospace;
   --ease:cubic-bezier(0.23,1,0.32,1);
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;overflow-x:hidden;cursor:none}
 a,button{cursor:none}
 ::selection{background:rgba(110,231,183,0.2);color:var(--accent)}
-::-webkit-scrollbar{width:2px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--accent)}
+::-webkit-scrollbar{width:2px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent)}
 
-/* CURSOR */
 #cur{width:10px;height:10px;background:var(--accent);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:8000;mix-blend-mode:screen;transition:width .3s,height .3s;will-change:transform}
 #cur-r{width:34px;height:34px;border:1px solid rgba(110,231,183,0.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:7999;transition:width .3s,height .3s,border-color .3s;will-change:transform}
 .big-cur #cur{width:64px;height:64px}
 .big-cur #cur-r{width:64px;height:64px;border-color:transparent}
 
-/* NOISE & CANVAS */
-#noise{position:fixed;inset:0;z-index:4000;pointer-events:none;opacity:0.032;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/150px 150px}
+#noise{position:fixed;inset:0;z-index:4000;pointer-events:none;opacity:0.03;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/150px 150px}
 #pc{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* SCROLL PROGRESS */
 #sp{position:fixed;top:0;left:0;right:0;height:2px;z-index:500;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));transform-origin:left;transform:scaleX(0);transition:transform 0.08s linear}
 
-/* HEADER */
-header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:rgba(5,5,8,0.82);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
-.h-back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .3s;padding:.4rem 0}
+header{padding:1.5rem 5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;background:rgba(5,5,8,0.85);backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+.h-back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.12em;text-transform:uppercase;transition:color .3s}
 .h-back:hover{color:var(--accent)}
 .h-logo{font-family:var(--fd);font-weight:800;font-size:1.1rem;letter-spacing:-0.03em;color:var(--accent);text-decoration:none}
-.h-right{display:flex;align-items:center;gap:1.5rem}
 .hire-btn{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(110,231,183,.28);color:var(--accent);padding:.45rem 1rem;border-radius:6px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all .3s;font-family:var(--fd);font-weight:600}
 .hire-btn:hover{background:rgba(110,231,183,.08);transform:translateY(-2px)}
 
-/* HERO BAND */
-.page-hero{padding:5rem 5rem 3rem;position:relative;z-index:1;overflow:hidden}
-.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(110,231,183,.04) 0%,transparent 70%)}
+.page-hero{padding:5rem 5rem 4rem;position:relative;z-index:1;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(110,231,183,.035) 0%,transparent 70%)}
 .ph-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .ph-label{display:inline-flex;align-items:center;gap:.6rem;border:1px solid rgba(110,231,183,.2);background:rgba(110,231,183,.04);padding:.4rem 1rem;border-radius:100px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;opacity:0;animation:su .8s var(--ease) .1s forwards}
 .ph-title{font-family:var(--fd);font-weight:800;font-size:clamp(2.5rem,7vw,6rem);line-height:.95;letter-spacing:-.04em;margin-bottom:1.2rem;opacity:0;animation:su .8s var(--ease) .25s forwards}
 .ph-title .hi{background:linear-gradient(110deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ph-sub{font-size:13px;color:var(--muted);line-height:1.8;max-width:500px;opacity:0;animation:su .8s var(--ease) .4s forwards}
+.pulse{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;animation:pd 2s ease infinite}
+@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(110,231,183,.5)}50%{box-shadow:0 0 0 7px rgba(110,231,183,0)}}
 @keyframes su{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
-/* FILTER BAR */
-.filter-bar{padding:0 5rem 2rem;position:relative;z-index:1}
-.fb-inner{max-width:1200px;margin:0 auto;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
-.fb-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-right:.4rem}
-.ftag{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .9rem;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--fb);font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:none;transition:all .3s ease}
+.controls{padding:0 5rem 3rem;position:relative;z-index:1}
+.ctrl-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.2rem}
+.filter-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.fb-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-right:.3rem}
+.ftag{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:var(--fb);font-size:10px;letter-spacing:.08em;text-transform:uppercase;cursor:none;transition:all .3s ease}
 .ftag:hover{border-color:rgba(110,231,183,.3);color:var(--accent)}
 .ftag.active{border-color:rgba(110,231,183,.4);background:rgba(110,231,183,.07);color:var(--accent)}
+.proj-count{font-size:11px;color:var(--muted);letter-spacing:.08em}
+.proj-count span{color:var(--accent);font-family:var(--fd);font-weight:800}
 
-/* PROJECT GRID */
 .sec{padding:0 5rem 6rem;position:relative;z-index:1}
 .si{max-width:1200px;margin:0 auto}
-.pl{display:flex;flex-direction:column;gap:1.2rem}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
 
-/* PROJECT ITEM */
-.pi{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.4rem 2.8rem;display:grid;grid-template-columns:72px 1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:none}
-.pi::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(110,231,183,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s ease}
-.pi:hover::before{opacity:1}
-.pi:hover{border-color:rgba(110,231,183,.22);transform:translateY(-3px);box-shadow:0 24px 70px rgba(0,0,0,.5)}
-.pi.ft{border-color:rgba(110,231,183,.12);background:linear-gradient(135deg,var(--surface),rgba(110,231,183,.015))}
-.pi.ft::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(110,231,183,.4),transparent)}
+/* PROJECT CARD */
+.pc{border-radius:22px;background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative;transition:transform .45s var(--ease),box-shadow .45s ease,border-color .45s ease,opacity .4s ease;cursor:none;display:flex;flex-direction:column}
+.pc:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 40px 90px rgba(0,0,0,.65);border-color:rgba(110,231,183,.28)}
+.pc.featured{border-color:rgba(110,231,183,.18)}
+.pc.featured::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(110,231,183,.6),transparent);z-index:2}
+.pc.hidden{opacity:0;pointer-events:none;transform:scale(.96)}
 
-.pidx{font-family:var(--fd);font-weight:800;font-size:2.8rem;color:rgba(255,255,255,.04);line-height:1;user-select:none;transition:color .4s ease;flex-shrink:0;width:72px;text-align:right}
-.pi:hover .pidx{color:rgba(110,231,183,.1)}
+.pc-img{position:relative;width:100%;height:190px;overflow:hidden;background:var(--surface2);flex-shrink:0}
+.pc-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pc-img-inner::before{content:'';position:absolute;inset:0;transition:transform .6s var(--ease)}
+.pc:hover .pc-img-inner::before{transform:scale(1.1)}
 
-.pb{min-width:0}
-.pbd{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
-.bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .65rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.cov-neural .pc-img-inner::before{background:linear-gradient(135deg,#0a1628 0%,#0e2744 45%,#1a3a5c 70%,#0d1f35 100%)}
+.cov-neural .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 40%,rgba(110,231,183,.18) 0%,transparent 55%),radial-gradient(circle at 75% 70%,rgba(129,140,248,.14) 0%,transparent 45%)}
+.cov-spend .pc-img-inner::before{background:linear-gradient(135deg,#0d1f0f 0%,#0a2010 45%,#122b14 70%,#061408 100%)}
+.cov-spend .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 60% 30%,rgba(110,231,183,.22) 0%,transparent 50%),radial-gradient(circle at 25% 70%,rgba(74,222,128,.12) 0%,transparent 40%)}
+.cov-career .pc-img-inner::before{background:linear-gradient(135deg,#160a28 0%,#1e0a35 45%,#280d45 70%,#120820 100%)}
+.cov-career .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 40% 35%,rgba(244,114,182,.2) 0%,transparent 50%),radial-gradient(circle at 70% 65%,rgba(129,140,248,.18) 0%,transparent 45%)}
+.cov-portfolio .pc-img-inner::before{background:linear-gradient(135deg,#050510 0%,#08081a 45%,#0e0e26 70%,#030308 100%)}
+.cov-portfolio .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(129,140,248,.2) 0%,transparent 55%),radial-gradient(circle at 80% 20%,rgba(110,231,183,.1) 0%,transparent 35%)}
+.cov-resume .pc-img-inner::before{background:linear-gradient(135deg,#200818 0%,#2a0a20 45%,#320c28 70%,#180610 100%)}
+.cov-resume .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 35% 55%,rgba(244,114,182,.22) 0%,transparent 50%),radial-gradient(circle at 70% 25%,rgba(251,191,36,.1) 0%,transparent 40%)}
+.cov-expendify .pc-img-inner::before{background:linear-gradient(135deg,#0a1828 0%,#0d2035 45%,#162848 70%,#081020 100%)}
+.cov-expendify .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 45% 40%,rgba(129,140,248,.2) 0%,transparent 50%),radial-gradient(circle at 72% 68%,rgba(110,231,183,.12) 0%,transparent 40%)}
+.cov-qr .pc-img-inner::before{background:linear-gradient(135deg,#0a1820 0%,#0d2030 45%,#122840 70%,#081018 100%)}
+.cov-qr .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 55% 40%,rgba(251,191,36,.18) 0%,transparent 50%),radial-gradient(circle at 25% 70%,rgba(110,231,183,.12) 0%,transparent 40%)}
+.cov-task .pc-img-inner::before{background:linear-gradient(135deg,#1a1a0a 0%,#242410 45%,#2e2e16 70%,#10100a 100%)}
+.cov-task .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 38% 45%,rgba(251,191,36,.18) 0%,transparent 50%),radial-gradient(circle at 72% 60%,rgba(110,231,183,.1) 0%,transparent 40%)}
+.cov-chat .pc-img-inner::before{background:linear-gradient(135deg,#180a28 0%,#220d38 45%,#2c1048 70%,#120820 100%)}
+.cov-chat .pc-img-inner::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(244,114,182,.18) 0%,transparent 50%),radial-gradient(circle at 30% 65%,rgba(129,140,248,.15) 0%,transparent 40%)}
+
+.cov-icon{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.cov-emoji{font-size:3.2rem;line-height:1;filter:drop-shadow(0 0 18px currentColor)}
+.cov-label{font-family:var(--fd);font-weight:800;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;position:relative;z-index:2}
+.cov-num{font-family:var(--fd);font-weight:800;font-size:4rem;color:rgba(255,255,255,.04);letter-spacing:-.05em;position:absolute;bottom:.4rem;right:1rem;line-height:1;transition:color .4s ease;z-index:1}
+.pc:hover .cov-num{color:rgba(255,255,255,.09)}
+.cov-dots{position:absolute;z-index:1;inset:0;overflow:hidden}
+.cov-dot{position:absolute;border-radius:50%;animation:cdrift 8s ease-in-out infinite}
+@keyframes cdrift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.08)}}
+
+.pc-body{padding:1.5rem 1.7rem 1.8rem;display:flex;flex-direction:column;flex:1}
+.pc-badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.24rem .65rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
 .bg1{background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);color:var(--accent)}
 .bg2{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);color:var(--accent2)}
 .bg3{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:var(--accent3)}
-.ptt{font-family:var(--fd);font-weight:800;font-size:1.25rem;letter-spacing:-.02em;margin-bottom:.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pds{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pst{display:flex;flex-wrap:wrap;gap:.35rem}
+.pc-title{font-family:var(--fd);font-weight:800;font-size:1.1rem;letter-spacing:-.025em;margin-bottom:.55rem;line-height:1.25}
+.pc-desc{font-size:11.5px;color:var(--muted);line-height:1.8;margin-bottom:1rem;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pc-stack{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:1.2rem}
 .sp{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:9.5px;padding:.2rem .55rem;border-radius:4px;letter-spacing:.04em}
+.pc-actions{display:flex;gap:.55rem;align-items:center;margin-top:auto}
+.pc-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem 1rem;border-radius:7px;font-size:10px;letter-spacing:.06em;text-decoration:none;font-family:var(--fd);font-weight:700;transition:all .3s ease;white-space:nowrap;border:none}
+.pc-btn.primary{background:var(--accent);color:#050508}
+.pc-btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(110,231,183,.3)}
+.pc-btn.outline{border:1px solid var(--border2);color:var(--text2);background:transparent}
+.pc-btn.outline:hover{border-color:rgba(110,231,183,.35);color:var(--accent)}
 
-.pa{display:flex;flex-direction:column;gap:.6rem;align-items:flex-end;flex-shrink:0;min-width:110px}
-.plb{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;font-size:10px;letter-spacing:.06em;padding:.45rem .9rem;border-radius:6px;transition:all .3s ease;white-space:nowrap;border:1px solid rgba(110,231,183,.2);color:var(--accent)}
-.plb:hover{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.4);transform:translateX(-2px)}
-.plb.ghost{color:var(--muted);border-color:var(--border)}
-.plb.ghost:hover{color:var(--text);border-color:var(--border2)}
-.plb.detail{background:rgba(110,231,183,.06)}
-
-/* STATS BAR */
-.stats-bar{padding:0 5rem 4rem;position:relative;z-index:1}
-.sb-inner{max-width:1200px;margin:0 auto;display:flex;gap:1px;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--border)}
-.sb-item{flex:1;background:var(--surface);padding:1.5rem 2rem;text-align:center}
-.sb-num{font-family:var(--fd);font-weight:800;font-size:2rem;color:var(--accent);line-height:1;margin-bottom:.3rem}
-.sb-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-
-/* REVEAL */
-.rv{opacity:0;transform:translateY(36px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rv.up{opacity:1;transform:none}
 
-/* MODAL */
 #mo{position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.88);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:all .4s ease;overflow-y:auto}
 #mo.open{opacity:1;visibility:visible}
 .mb{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:2.5rem;max-width:700px;width:100%;position:relative;transform:translateY(30px) scale(.97);transition:all .4s var(--ease);margin:auto}
 #mo.open .mb{transform:translateY(0) scale(1)}
-.mc{position:absolute;top:1.2rem;right:1.2rem;width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .3s ease;flex-shrink:0}
+.mc{position:absolute;top:1.2rem;right:1.2rem;width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;transition:all .3s ease}
 .mc:hover{color:var(--text);border-color:var(--border2)}
 .mt2{font-family:var(--fd);font-weight:800;font-size:clamp(1.2rem,4vw,1.7rem);letter-spacing:-.02em;margin-bottom:.8rem;padding-right:3rem;line-height:1.2}
 .mdesc{font-size:12.5px;color:var(--muted);line-height:1.9;margin-bottom:1.2rem}
@@ -124,247 +139,301 @@ header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-b
 .ms{display:flex;flex-wrap:wrap;gap:.4rem;margin:.8rem 0 1.8rem}
 .modal-btns{display:flex;gap:.8rem;flex-wrap:wrap}
 .modal-btns a{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.6rem;border-radius:8px;font-family:var(--fd);font-weight:700;font-size:11px;letter-spacing:.06em;text-decoration:none;transition:all .3s ease}
-.modal-btns .mbp{background:var(--accent);color:#050508}
-.modal-btns .mbp:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(110,231,183,.3)}
-.modal-btns .mbg{border:1px solid var(--border2);color:var(--text2)}
-.modal-btns .mbg:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.mbp{background:var(--accent);color:#050508}
+.mbp:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(110,231,183,.3)}
+.mbg{border:1px solid var(--border2);color:var(--text2)}
+.mbg:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
 
-/* BACK TO TOP */
 #btt{position:fixed;bottom:2rem;right:2rem;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);color:var(--accent);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:none;opacity:0;transform:translateY(12px);transition:all .4s var(--ease)}
 #btt.show{opacity:1;transform:translateY(0)}
 #btt:hover{background:rgba(110,231,183,.1);border-color:rgba(110,231,183,.35);transform:translateY(-3px)}
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:1024px){
-  .pi{grid-template-columns:60px 1fr auto;gap:1.5rem;padding:2rem}
-  .pidx{font-size:2.2rem;width:60px}
-}
+@media(max-width:1100px){.card-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){
   header{padding:1.2rem 1.5rem}
   .page-hero{padding:3rem 1.5rem 2rem}
-  .filter-bar{padding:0 1.5rem 1.5rem}
+  .controls{padding:0 1.5rem 2rem}
   .sec{padding:0 1.5rem 4rem}
-  .stats-bar{padding:0 1.5rem 3rem}
-  .sb-inner{flex-wrap:wrap;border-radius:12px}
-  .sb-item{flex:1 1 45%}
-  .pi{grid-template-columns:1fr;gap:1rem;padding:1.6rem}
-  .pidx{font-size:1.8rem;width:auto;text-align:left}
-  .pa{flex-direction:row;align-items:flex-start;flex-wrap:wrap;min-width:0}
-  .ptt{white-space:normal}
-  .pds{-webkit-line-clamp:3}
+  .card-grid{grid-template-columns:repeat(2,1fr);gap:1.2rem}
 }
 @media(max-width:640px){
   header{padding:1rem}
-  .h-right .hire-btn{display:none}
+  .hire-btn{display:none}
   .page-hero{padding:2rem 1rem 1.5rem}
-  .ph-title{font-size:clamp(2rem,10vw,3.5rem)}
-  .filter-bar{padding:0 1rem 1.5rem}
+  .controls{padding:0 1rem 1.5rem}
   .sec{padding:0 1rem 3rem}
-  .stats-bar{padding:0 1rem 2rem}
-  .sb-inner{flex-direction:column}
-  .sb-item{flex:1 1 100%}
-  .pi{padding:1.2rem}
-  .pa{gap:.4rem}
-  .plb{font-size:9px;padding:.38rem .75rem}
-  .mb{padding:1.4rem;border-radius:16px;margin:0}
-  .mt2{font-size:1.1rem}
+  .card-grid{grid-template-columns:1fr;gap:1rem}
+  .mb{padding:1.4rem;border-radius:16px}
   .modal-btns{flex-direction:column}
   .modal-btns a{justify-content:center}
   #mo{align-items:flex-start;padding:.5rem}
 }
-@media(max-width:400px){
-  .pi{padding:1rem}
-  .fb-inner{gap:.4rem}
-  .ftag{font-size:9px;padding:.35rem .7rem}
-}
 </style>
 </head>
 <body>
-
 <div id="noise"></div>
 <canvas id="pc"></canvas>
 <div id="sp"></div>
 <div id="cur"></div>
 <div id="cur-r"></div>
 
-<!-- HEADER -->
 <header>
   <a href="index.html" class="h-back">← Back to Home</a>
   <a href="index.html" class="h-logo">AA.</a>
-  <div class="h-right">
-    <a href="index.html#contact" class="hire-btn">Hire Me →</a>
-  </div>
+  <a href="index.html#contact" class="hire-btn">Hire Me →</a>
 </header>
 
-<!-- PAGE HERO -->
 <div class="page-hero">
   <div class="ph-inner">
-    <div class="ph-label"><span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;animation:pd 2s ease infinite"></span> 9 Projects Total</div>
+    <div class="ph-label"><span class="pulse"></span> 9 Projects</div>
     <h1 class="ph-title">All <span class="hi">Projects</span></h1>
-    <p class="ph-sub">Every project is a real-world solution built with focus on UX, performance, and clean code.</p>
-  </div>
-</div>
-<style>@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(110,231,183,.5)}50%{box-shadow:0 0 0 7px rgba(110,231,183,0)}}</style>
-
-<!-- FILTER BAR -->
-<div class="filter-bar">
-  <div class="fb-inner">
-    <span class="fb-label">Filter:</span>
-    <button class="ftag active" onclick="filterProjects('all',this)">All</button>
-    <button class="ftag" onclick="filterProjects('mern',this)">MERN</button>
-    <button class="ftag" onclick="filterProjects('ai',this)">AI / Gen AI</button>
-    <button class="ftag" onclick="filterProjects('frontend',this)">Frontend</button>
-    <button class="ftag" onclick="filterProjects('security',this)">Security</button>
+    <p class="ph-sub">Every project is a real-world solution — built with focus on UX, performance, and clean code.</p>
   </div>
 </div>
 
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="sb-inner">
-    <div class="sb-item"><div class="sb-num">9</div><div class="sb-label">Total Projects</div></div>
-    <div class="sb-item"><div class="sb-num">3</div><div class="sb-label">AI Powered</div></div>
-    <div class="sb-item"><div class="sb-num">5</div><div class="sb-label">Full Stack</div></div>
-    <div class="sb-item"><div class="sb-num">10+</div><div class="sb-label">Technologies</div></div>
+<div class="controls">
+  <div class="ctrl-inner">
+    <div class="filter-row">
+      <span class="fb-label">Filter:</span>
+      <button class="ftag active" onclick="filterCards('all',this)">All</button>
+      <button class="ftag" onclick="filterCards('mern',this)">MERN</button>
+      <button class="ftag" onclick="filterCards('ai',this)">AI / Gen AI</button>
+      <button class="ftag" onclick="filterCards('frontend',this)">Frontend</button>
+      <button class="ftag" onclick="filterCards('security',this)">Security</button>
+    </div>
+    <div class="proj-count">Showing <span id="visibleCount">9</span> projects</div>
   </div>
 </div>
 
-<!-- PROJECTS LIST -->
 <section class="sec">
   <div class="si">
-    <div class="pl" id="projectList">
+    <div class="card-grid" id="cardGrid">
 
-      <!-- 01 NeuralLearn -->
-      <div class="pi ft rv" data-tags="mern,ai" onclick="openModal('neural')">
-        <div class="pidx">01</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
-          <h3 class="ptt">NeuralLearn — AI Powered LMS</h3>
-          <p class="pds">Enterprise-grade LMS with AI chatbot, interactive dashboards, job portal, role-based access control, course management, and real-time notifications — built end-to-end on the MERN stack.</p>
-          <div class="pst"><span class="sp">MongoDB</span><span class="sp">Express.js</span><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span><span class="sp">Chart.js</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('neural')">Details →</span>
+      <div class="pc featured cov-neural rv" data-tags="mern,ai" onclick="openModal('neural')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots">
+            <div class="cov-dot" style="width:80px;height:80px;background:rgba(110,231,183,.06);top:8%;left:4%;animation-delay:0s"></div>
+            <div class="cov-dot" style="width:45px;height:45px;background:rgba(129,140,248,.07);bottom:15%;right:8%;animation-delay:2.5s"></div>
+          </div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(110,231,183,.9)">🧠</div>
+            <div class="cov-label" style="color:rgba(110,231,183,.55)">NeuralLearn</div>
+          </div>
+          <div class="cov-num">01</div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.05" viewBox="0 0 340 190" preserveAspectRatio="none">
+            <line x1="0" y1="47" x2="340" y2="47" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="95" x2="340" y2="95" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="143" x2="340" y2="143" stroke="#6ee7b7" stroke-width=".8"/>
+            <line x1="85" y1="0" x2="85" y2="190" stroke="#6ee7b7" stroke-width=".8"/><line x1="170" y1="0" x2="170" y2="190" stroke="#6ee7b7" stroke-width=".8"/><line x1="255" y1="0" x2="255" y2="190" stroke="#6ee7b7" stroke-width=".8"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
+          <h3 class="pc-title">NeuralLearn — AI Powered LMS</h3>
+          <p class="pc-desc">Enterprise-grade LMS with AI chatbot, interactive dashboards, job portal, RBAC, course management, and real-time notifications built end-to-end on MERN.</p>
+          <div class="pc-stack"><span class="sp">MongoDB</span><span class="sp">Express.js</span><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span><span class="sp">Chart.js</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('neural')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
-      <!-- 02 SpendWise -->
-      <div class="pi rv" data-tags="mern" onclick="openModal('spendwise')">
-        <div class="pidx">02</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">SpendWise — Smart Expense Tracker</h3>
-          <p class="pds">Smart personal finance app with real-time tracking, budget management, category-wise analytics, visual dashboards, CSV export, and full JWT authentication.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('spendwise')">Details →</span>
-        </div>
-      </div>
-
-      <!-- 03 AI Career Copilot -->
-      <div class="pi rv" data-tags="ai,mern" onclick="openModal('career')">
-        <div class="pidx">03</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">AI Career Copilot</h3>
-          <p class="pds">AI-powered career assistant that helps users build ATS-optimized resumes, prep for interviews, and discover job opportunities using Langchain agents and LLMs.</p>
-          <div class="pst"><span class="sp">Next.js</span><span class="sp">Langchain</span><span class="sp">OpenAI API</span><span class="sp">MongoDB</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('career')">Details →</span>
+      <div class="pc cov-spend rv" data-tags="mern" style="transition-delay:.06s" onclick="openModal('spendwise')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:85px;height:85px;background:rgba(110,231,183,.05);top:5%;right:5%;animation-delay:1s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(74,222,128,.9)">💰</div>
+            <div class="cov-label" style="color:rgba(110,231,183,.55)">SpendWise</div>
+          </div>
+          <div class="cov-num">02</div>
+          <svg style="position:absolute;bottom:0;left:0;right:0;opacity:.1" viewBox="0 0 340 75" preserveAspectRatio="none">
+            <rect x="15" y="28" width="26" height="47" rx="3" fill="#6ee7b7"/><rect x="55" y="12" width="26" height="63" rx="3" fill="#6ee7b7"/>
+            <rect x="95" y="38" width="26" height="37" rx="3" fill="#6ee7b7"/><rect x="135" y="8" width="26" height="67" rx="3" fill="#6ee7b7"/>
+            <rect x="175" y="22" width="26" height="53" rx="3" fill="#6ee7b7"/><rect x="215" y="42" width="26" height="33" rx="3" fill="#6ee7b7"/>
+            <rect x="255" y="18" width="26" height="57" rx="3" fill="#6ee7b7"/><rect x="295" y="32" width="26" height="43" rx="3" fill="#6ee7b7"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="pc-title">SpendWise — Expense Tracker</h3>
+          <p class="pc-desc">Smart personal finance app with real-time tracking, budget management, category analytics, visual dashboards, and CSV export.</p>
+          <div class="pc-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('spendwise')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
-      <!-- 04 Personal Portfolio -->
-      <div class="pi rv" data-tags="frontend" onclick="openModal('portfolio')">
-        <div class="pidx">04</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span></div>
-          <h3 class="ptt">Personal Portfolio Website</h3>
-          <p class="pds">This very portfolio — a custom-designed, fully animated developer showcase with particle canvas, custom cursor, glitch effects, scroll animations, and a responsive layout.</p>
-          <div class="pst"><span class="sp">HTML5</span><span class="sp">CSS3</span><span class="sp">Vanilla JS</span><span class="sp">Canvas API</span><span class="sp">EmailJS</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('portfolio')">Details →</span>
-        </div>
-      </div>
-
-      <!-- 05 Resume Analyzer -->
-      <div class="pi rv" data-tags="ai,mern" onclick="openModal('resume')">
-        <div class="pidx">05</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">Resume Analyzer</h3>
-          <p class="pds">AI-powered resume review tool that parses uploaded PDFs, scores them against job descriptions, highlights gaps, and provides actionable improvement suggestions powered by Langchain RAG.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">Langchain</span><span class="sp">OpenAI</span><span class="sp">Pinecone</span><span class="sp">MongoDB</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('resume')">Details →</span>
+      <div class="pc cov-career rv" data-tags="ai,mern" style="transition-delay:.12s" onclick="openModal('career')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:65px;height:65px;background:rgba(244,114,182,.07);top:12%;left:8%;animation-delay:.5s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(244,114,182,.9)">🚀</div>
+            <div class="cov-label" style="color:rgba(244,114,182,.55)">AI Copilot</div>
+          </div>
+          <div class="cov-num">03</div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.06" viewBox="0 0 340 190">
+            <circle cx="50" cy="95" r="5" fill="#f472b6"/><circle cx="130" cy="55" r="5" fill="#818cf8"/><circle cx="130" cy="135" r="5" fill="#818cf8"/><circle cx="220" cy="75" r="5" fill="#f472b6"/><circle cx="220" cy="115" r="5" fill="#f472b6"/><circle cx="285" cy="95" r="5" fill="#818cf8"/>
+            <line x1="50" y1="95" x2="130" y2="55" stroke="#f472b6" stroke-width="1"/><line x1="50" y1="95" x2="130" y2="135" stroke="#f472b6" stroke-width="1"/><line x1="130" y1="55" x2="220" y2="75" stroke="#818cf8" stroke-width="1"/><line x1="130" y1="135" x2="220" y2="115" stroke="#818cf8" stroke-width="1"/><line x1="220" y1="75" x2="285" y2="95" stroke="#f472b6" stroke-width="1"/><line x1="220" y1="115" x2="285" y2="95" stroke="#f472b6" stroke-width="1"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="pc-title">AI Career Copilot</h3>
+          <p class="pc-desc">AI-powered career assistant using Langchain agents for ATS-optimized resumes, interview prep, and personalized job discovery.</p>
+          <div class="pc-stack"><span class="sp">Next.js</span><span class="sp">Langchain</span><span class="sp">OpenAI API</span><span class="sp">MongoDB</span><span class="sp">JWT</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('career')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
-      <!-- 06 Expendify -->
-      <div class="pi rv" data-tags="mern" onclick="openModal('expendify')">
-        <div class="pidx">06</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">Expendify — Group Expense Splitter</h3>
-          <p class="pds">A collaborative expense management app for groups and trips. Split bills intelligently, track who owes whom, settle debts, and visualize group spending with real-time sync.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Socket.io</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('expendify')">Details →</span>
-        </div>
-      </div>
-
-      <!-- 07 QR Auth System -->
-      <div class="pi rv" data-tags="security,mern" onclick="openModal('qr')">
-        <div class="pidx">07</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">QR-Based Employee Authorization</h3>
-          <p class="pds">Enterprise access control using dynamic, time-expiring QR codes. Includes real-time authorization, audit logs, admin dashboard, and role-based permissions for secure workplace management.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">QR Code API</span><span class="sp">JWT</span><span class="sp">RBAC</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('qr')">Details →</span>
+      <div class="pc cov-portfolio rv" data-tags="frontend" style="transition-delay:.18s" onclick="openModal('portfolio')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:95px;height:95px;background:rgba(129,140,248,.05);top:-5%;left:-8%;animation-delay:1.5s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(129,140,248,.9)">✦</div>
+            <div class="cov-label" style="color:rgba(129,140,248,.55)">Portfolio</div>
+          </div>
+          <div class="cov-num">04</div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.13" viewBox="0 0 340 190">
+            <circle cx="58" cy="38" r="2.5" fill="#818cf8"/><circle cx="115" cy="75" r="2" fill="#6ee7b7"/><circle cx="195" cy="28" r="2.5" fill="#f472b6"/><circle cx="275" cy="85" r="2" fill="#818cf8"/><circle cx="38" cy="145" r="2.5" fill="#6ee7b7"/><circle cx="155" cy="155" r="2" fill="#818cf8"/><circle cx="235" cy="135" r="2.5" fill="#f472b6"/><circle cx="305" cy="155" r="2" fill="#6ee7b7"/>
+            <line x1="58" y1="38" x2="115" y2="75" stroke="#818cf8" stroke-width=".6" opacity=".5"/><line x1="115" y1="75" x2="195" y2="28" stroke="#6ee7b7" stroke-width=".6" opacity=".5"/><line x1="195" y1="28" x2="275" y2="85" stroke="#f472b6" stroke-width=".6" opacity=".5"/><line x1="38" y1="145" x2="155" y2="155" stroke="#6ee7b7" stroke-width=".6" opacity=".5"/><line x1="155" y1="155" x2="235" y2="135" stroke="#818cf8" stroke-width=".6" opacity=".5"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span></div>
+          <h3 class="pc-title">Personal Portfolio Website</h3>
+          <p class="pc-desc">This very portfolio — particle canvas, glitch effects, scroll reveal animations, custom cursor, responsive layout built from scratch.</p>
+          <div class="pc-stack"><span class="sp">HTML5</span><span class="sp">CSS3</span><span class="sp">Vanilla JS</span><span class="sp">Canvas API</span><span class="sp">EmailJS</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('portfolio')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
-      <!-- 08 Task Management App -->
-      <div class="pi rv" data-tags="mern,frontend" onclick="openModal('task')">
-        <div class="pidx">08</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">ProTask — Kanban Task Manager</h3>
-          <p class="pds">A beautiful, drag-and-drop Kanban board for team task management. Features custom workflows, priority tagging, deadline reminders, and real-time collaboration.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Socket.io</span><span class="sp">DnD Kit</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('task')">Details →</span>
+      <div class="pc cov-resume rv" data-tags="ai,mern" style="transition-delay:.24s" onclick="openModal('resume')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:55px;height:55px;background:rgba(244,114,182,.07);top:18%;right:12%;animation-delay:.8s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(244,114,182,.9)">📄</div>
+            <div class="cov-label" style="color:rgba(244,114,182,.55)">Resume AI</div>
+          </div>
+          <div class="cov-num">05</div>
+          <svg style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);opacity:.1;width:110px;height:75px" viewBox="0 0 110 75">
+            <rect x="5" y="5" width="100" height="65" rx="4" fill="none" stroke="#f472b6" stroke-width="1.5"/>
+            <line x1="14" y1="19" x2="96" y2="19" stroke="#f472b6" stroke-width="1"/><line x1="14" y1="31" x2="78" y2="31" stroke="#f472b6" stroke-width="1"/><line x1="14" y1="43" x2="88" y2="43" stroke="#f472b6" stroke-width="1"/><line x1="14" y1="55" x2="64" y2="55" stroke="#f472b6" stroke-width="1"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="pc-title">Resume Analyzer</h3>
+          <p class="pc-desc">AI-powered resume review — upload PDFs, get ATS scoring, detect skill gaps, and receive actionable improvements via Langchain RAG.</p>
+          <div class="pc-stack"><span class="sp">React.js</span><span class="sp">Langchain</span><span class="sp">Pinecone</span><span class="sp">OpenAI</span><span class="sp">MongoDB</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('resume')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
-      <!-- 09 AI Chat App -->
-      <div class="pi rv" data-tags="ai,frontend" onclick="openModal('chat')">
-        <div class="pidx">09</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span></div>
-          <h3 class="ptt">NexusChat — AI Chat Interface</h3>
-          <p class="pds">A sleek, feature-rich chat interface for interacting with large language models. Supports multi-session conversations, message history, model switching, and markdown rendering.</p>
-          <div class="pst"><span class="sp">Next.js</span><span class="sp">OpenAI API</span><span class="sp">Tailwind CSS</span><span class="sp">MongoDB</span><span class="sp">Streaming</span></div>
+      <div class="pc cov-expendify rv" data-tags="mern" style="transition-delay:.30s" onclick="openModal('expendify')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:70px;height:70px;background:rgba(129,140,248,.06);top:10%;left:8%;animation-delay:1.2s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(129,140,248,.9)">🧾</div>
+            <div class="cov-label" style="color:rgba(129,140,248,.55)">Expendify</div>
+          </div>
+          <div class="cov-num">06</div>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="pc-title">Expendify — Group Expense Splitter</h3>
+          <p class="pc-desc">Collaborative expense management for groups and trips — split bills intelligently, track debts, settle up with real-time sync via Socket.io.</p>
+          <div class="pc-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Socket.io</span><span class="sp">JWT</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('expendify')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb detail" onclick="event.stopPropagation();openModal('chat')">Details →</span>
+      </div>
+
+      <div class="pc cov-qr rv" data-tags="security,mern" style="transition-delay:.36s" onclick="openModal('qr')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:70px;height:70px;background:rgba(251,191,36,.05);top:5%;left:5%;animation-delay:.3s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(251,191,36,.9)">🔐</div>
+            <div class="cov-label" style="color:rgba(251,191,36,.55)">QR Auth</div>
+          </div>
+          <div class="cov-num">07</div>
+          <svg style="position:absolute;bottom:10px;right:14px;opacity:.1;width:56px;height:56px" viewBox="0 0 60 60">
+            <rect x="2" y="2" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="8" y="8" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+            <rect x="34" y="2" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="40" y="8" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+            <rect x="2" y="34" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="8" y="40" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+            <rect x="34" y="34" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/><rect x="44" y="34" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/><rect x="34" y="44" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/><rect x="44" y="50" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
+          <h3 class="pc-title">QR Employee Authorization</h3>
+          <p class="pc-desc">Enterprise access control with time-expiring QR codes, real-time auth, comprehensive audit logs, and role-based permissions.</p>
+          <div class="pc-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">QR Code API</span><span class="sp">JWT</span><span class="sp">RBAC</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('qr')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pc cov-task rv" data-tags="mern,frontend" style="transition-delay:.42s" onclick="openModal('task')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:60px;height:60px;background:rgba(251,191,36,.05);bottom:15%;right:10%;animation-delay:2s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(251,191,36,.9)">📋</div>
+            <div class="cov-label" style="color:rgba(251,191,36,.55)">ProTask</div>
+          </div>
+          <div class="cov-num">08</div>
+          <svg style="position:absolute;bottom:12px;left:16px;opacity:.1;width:120px;height:60px" viewBox="0 0 120 60">
+            <rect x="2" y="2" width="34" height="56" rx="3" fill="none" stroke="#fbbf24" stroke-width="1"/>
+            <rect x="43" y="2" width="34" height="56" rx="3" fill="none" stroke="#fbbf24" stroke-width="1"/>
+            <rect x="84" y="2" width="34" height="56" rx="3" fill="none" stroke="#fbbf24" stroke-width="1"/>
+            <rect x="6" y="8" width="26" height="8" rx="2" fill="#fbbf24" opacity=".3"/><rect x="6" y="20" width="26" height="8" rx="2" fill="#fbbf24" opacity=".2"/>
+            <rect x="47" y="8" width="26" height="8" rx="2" fill="#fbbf24" opacity=".3"/>
+            <rect x="88" y="8" width="26" height="8" rx="2" fill="#fbbf24" opacity=".2"/>
+          </svg>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span></div>
+          <h3 class="pc-title">ProTask — Kanban Task Manager</h3>
+          <p class="pc-desc">Drag-and-drop Kanban board with custom workflows, priority tags, real-time collaboration via Socket.io, and sub-task management.</p>
+          <div class="pc-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Socket.io</span><span class="sp">DnD Kit</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('task')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pc cov-chat rv" data-tags="ai,frontend" style="transition-delay:.48s" onclick="openModal('chat')">
+        <div class="pc-img"><div class="pc-img-inner">
+          <div class="cov-dots"><div class="cov-dot" style="width:65px;height:65px;background:rgba(244,114,182,.06);top:12%;right:8%;animation-delay:1s"></div></div>
+          <div class="cov-icon">
+            <div class="cov-emoji" style="color:rgba(244,114,182,.9)">💬</div>
+            <div class="cov-label" style="color:rgba(244,114,182,.55)">NexusChat</div>
+          </div>
+          <div class="cov-num">09</div>
+        </div></div>
+        <div class="pc-body">
+          <div class="pc-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span></div>
+          <h3 class="pc-title">NexusChat — AI Chat Interface</h3>
+          <p class="pc-desc">Sleek production-quality chat UI for LLMs — multi-session history, streaming responses, markdown rendering, and model switching.</p>
+          <div class="pc-stack"><span class="sp">Next.js</span><span class="sp">OpenAI API</span><span class="sp">MongoDB</span><span class="sp">Tailwind CSS</span><span class="sp">Streaming</span></div>
+          <div class="pc-actions">
+            <button class="pc-btn primary" onclick="event.stopPropagation();openModal('chat')">Details →</button>
+            <a href="https://github.com/ArpitAware" target="_blank" class="pc-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+          </div>
         </div>
       </div>
 
@@ -372,144 +441,71 @@ header{padding:2rem 5rem;display:flex;align-items:center;justify-content:space-b
   </div>
 </section>
 
-<!-- MODAL -->
 <div id="mo" onclick="closeModalBg(event)">
   <div class="mb">
     <button class="mc" onclick="closeModal()">✕</button>
     <div id="mc2"></div>
   </div>
 </div>
-
 <button id="btt" aria-label="Back to top">↑</button>
 
 <script>
-/* SCROLL PROGRESS & BACK TO TOP */
 window.addEventListener('scroll',()=>{
   document.getElementById('sp').style.transform=`scaleX(${window.scrollY/(document.body.scrollHeight-window.innerHeight)})`;
   document.getElementById('btt').classList.toggle('show',window.scrollY>400);
 },{passive:true});
 document.getElementById('btt').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-/* CANVAS */
 const cv=document.getElementById('pc'),cx2=cv.getContext('2d');
 let W,H,mx2=0,my2=0;
 function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
 rsz();window.addEventListener('resize',rsz);
 const cols=['110,231,183','129,140,248','244,114,182'];
-class P{constructor(){this.init();}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.r=Math.random()*1+.3;this.a=Math.random()*.4+.1;this.c=cols[Math.floor(Math.random()*3)];this.life=0;this.ml=300+Math.random()*400;}update(){this.x+=this.vx;this.y+=this.vy;this.life++;const dx=mx2-this.x,dy=my2-this.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){this.vx-=dx/d*.012;this.vy-=dy/d*.012;}this.vx*=.99;this.vy*=.99;if(this.life>this.ml||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.init();}draw(){cx2.beginPath();cx2.arc(this.x,this.y,this.r,0,Math.PI*2);cx2.fillStyle=`rgba(${this.c},${this.a*Math.sin(this.life/this.ml*Math.PI)})`;cx2.fill();}}
-const pts=Array.from({length:70},()=>new P());
+class Pt{constructor(){this.init();}init(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.25;this.vy=(Math.random()-.5)*.25;this.r=Math.random()*1+.3;this.a=Math.random()*.4+.1;this.c=cols[Math.floor(Math.random()*3)];this.life=0;this.ml=300+Math.random()*400;}update(){this.x+=this.vx;this.y+=this.vy;this.life++;const dx=mx2-this.x,dy=my2-this.y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){this.vx-=dx/d*.012;this.vy-=dy/d*.012;}this.vx*=.99;this.vy*=.99;if(this.life>this.ml||this.x<-10||this.x>W+10||this.y<-10||this.y>H+10)this.init();}draw(){cx2.beginPath();cx2.arc(this.x,this.y,this.r,0,Math.PI*2);cx2.fillStyle=`rgba(${this.c},${this.a*Math.sin(this.life/this.ml*Math.PI)})`;cx2.fill();}}
+const pts=Array.from({length:60},()=>new Pt());
 function drawConn(){for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<90){cx2.beginPath();cx2.moveTo(pts[i].x,pts[i].y);cx2.lineTo(pts[j].x,pts[j].y);cx2.strokeStyle=`rgba(110,231,183,${.04*(1-d/90)})`;cx2.lineWidth=.5;cx2.stroke();}}}
 (function anim(){cx2.clearRect(0,0,W,H);drawConn();pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(anim);})();
 document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;});
 
-/* CURSOR */
 const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
 let ccx=0,ccy=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{ccx=e.clientX;ccy=e.clientY;cur.style.transform=`translate(${ccx-5}px,${ccy-5}px)`;});
 (function ar(){rx+=(ccx-rx-17)*.1;ry+=(ccy-ry-17)*.1;curR.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(ar);})();
-document.querySelectorAll('.pi').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('big-cur'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('big-cur'));
-});
-document.querySelectorAll('a,button,.plb,.ftag').forEach(el=>{
+document.querySelectorAll('.pc').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('big-cur'));el.addEventListener('mouseleave',()=>document.body.classList.remove('big-cur'));});
+document.querySelectorAll('a,button,.ftag').forEach(el=>{
   el.addEventListener('mouseenter',()=>{document.body.classList.remove('big-cur');cur.style.width='18px';cur.style.height='18px';curR.style.width='50px';curR.style.height='50px';curR.style.borderColor='rgba(110,231,183,.55)';});
   el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';curR.style.width='34px';curR.style.height='34px';curR.style.borderColor='rgba(110,231,183,.35)';});
 });
 
-/* REVEAL */
-const obs=new IntersectionObserver(ens=>{
-  ens.forEach((en,i)=>{
-    if(en.isIntersecting){
-      setTimeout(()=>en.target.classList.add('up'),i*40);
-      obs.unobserve(en.target);
-    }
-  });
-},{threshold:.08});
+const obs=new IntersectionObserver(ens=>{ens.forEach(en=>{if(en.isIntersecting){en.target.classList.add('up');obs.unobserve(en.target);}});},{threshold:.08});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-/* FILTER */
-function filterProjects(tag,btn){
+function filterCards(tag,btn){
   document.querySelectorAll('.ftag').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.pi').forEach(p=>{
-    const tags=p.dataset.tags||'';
-    const show=tag==='all'||tags.includes(tag);
-    p.style.transition='opacity .4s ease, transform .4s ease';
-    if(show){p.style.opacity='1';p.style.pointerEvents='auto';p.style.display='';}
-    else{p.style.opacity='0';p.style.pointerEvents='none';setTimeout(()=>{if(!tags.includes(tag)&&btn.classList.contains('active'))p.style.display='none';},400);}
+  let count=0;
+  document.querySelectorAll('.pc').forEach(p=>{
+    const show=tag==='all'||(p.dataset.tags||'').includes(tag);
+    p.classList.toggle('hidden',!show);
+    if(show)count++;
   });
+  document.getElementById('visibleCount').textContent=count;
 }
 
-/* MODAL DATA */
 const mdata={
-  neural:{
-    badge:'<span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span>',
-    title:'NeuralLearn — AI Powered LMS',
-    desc:'A full-featured, enterprise-grade LMS built entirely on the MERN stack with AI capabilities. My most ambitious project — solving real challenges in online education with a comprehensive feature set that rivals commercial platforms.',
-    features:['Interactive analytics dashboards with real-time data visualization using Chart.js','AI-powered student chatbot for instant Q&A and course guidance','Integrated job portal connecting students with employers and internship opportunities','Role-based access control — Student, Instructor, and Admin roles with granular permissions','Course creation, enrollment tracking, quiz system, and progress analytics','JWT authentication with secure refresh token rotation and bcrypt password hashing','Real-time notifications system with polling architecture','Fully responsive UI with custom React component system'],
-    stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','REST API','RBAC','bcrypt']
-  },
-  spendwise:{
-    badge:'<span class="bdg bg2">MERN Stack</span>',
-    title:'SpendWise — Smart Expense Tracker',
-    desc:'A smart personal finance application that makes tracking money intuitive and insightful. Designed with a focus on clean UX, speed, and actionable data visualization for everyday budgeting.',
-    features:['Real-time expense and income logging with instant UI updates','Category-wise breakdown with interactive pie charts and bar graphs','Monthly/yearly budget setting with visual overspend alerts','Full JWT authentication with bcrypt-hashed passwords','Filter and search transactions by date, category, and amount','Monthly trend analysis with comparative charts','Export transaction history to CSV for external use'],
-    stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']
-  },
-  career:{
-    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',
-    title:'AI Career Copilot',
-    desc:'An AI-powered career assistant that helps users navigate their job search. Uses Langchain agents and LLMs to generate tailored resumes, practice interview answers, and discover opportunities.',
-    features:['AI resume builder with ATS optimization powered by Langchain agents','Interview prep module with role-specific questions and AI-generated feedback','Job opportunity discovery with smart filtering and personalization','Context-aware career advice based on user profile and goals','Conversation history with full multi-turn chat interface','PDF resume export with clean, professional formatting','Stored sessions and conversation history via MongoDB'],
-    stack:['Next.js','Node.js','Langchain','OpenAI API','MongoDB','JWT','Tailwind CSS']
-  },
-  portfolio:{
-    badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span>',
-    title:'Personal Portfolio Website',
-    desc:'A meticulously designed developer portfolio showcasing skills, projects, and personality. Built from scratch with vanilla HTML/CSS/JS featuring rich animations and interactive elements.',
-    features:['Custom WebGL-style particle canvas with mouse interaction and connections','Glitch text effect and gradient animations on hero section','Intersection Observer-powered scroll reveal system','Custom cursor with magnetic effects and blend-mode mixing','Smooth typing animation with multiple role cycling','Skill bars, ring charts, and animated stat counters','Fully responsive across all screen sizes','EmailJS-powered contact form with real-time feedback'],
-    stack:['HTML5','CSS3','Vanilla JS','Canvas API','EmailJS','Intersection Observer API','CSS Animations']
-  },
-  resume:{
-    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',
-    title:'Resume Analyzer',
-    desc:'An AI-powered resume review tool that gives job seekers actionable, data-driven feedback. Upload a PDF resume and get instant scoring, gap analysis, and specific improvement suggestions powered by Langchain RAG.',
-    features:['PDF upload and intelligent text extraction with chunking strategy','Langchain RAG pipeline for context-aware resume analysis','Job description matching with skills gap identification','ATS compatibility scoring with specific keyword suggestions','Section-by-section feedback on summary, experience, and skills','Pinecone vector store for semantic similarity matching','Export improved resume suggestions as a structured report'],
-    stack:['React.js','Node.js','Langchain','OpenAI API','Pinecone','MongoDB','JWT','PDF.js']
-  },
-  expendify:{
-    badge:'<span class="bdg bg2">MERN Stack</span>',
-    title:'Expendify — Group Expense Splitter',
-    desc:'A collaborative expense management app designed for groups, roommates, and trips. Track shared costs, split bills intelligently, and settle debts with real-time syncing across all group members.',
-    features:['Create groups and invite members via email or link','Log shared expenses with flexible splitting options (equal, percentage, custom)','Real-time debt tracking — who owes who and how much','Settlement suggestions to minimize the number of transactions','Visual group spending breakdown with category charts','Real-time updates via Socket.io — everyone sees changes instantly','Push notifications for new expense additions and settlements'],
-    stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','JWT','bcrypt','Chart.js']
-  },
-  qr:{
-    badge:'<span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span>',
-    title:'QR-Based Employee Authorization',
-    desc:'An enterprise access control system leveraging dynamic, time-expiring QR codes for secure, fast employee verification. Built for workplaces that need reliable, auditable, and scalable access management.',
-    features:['Dynamic QR code generation with configurable time-expiry for enhanced security','Real-time authorization checks on scan — instant allow/deny response under 100ms','Comprehensive audit logs tracking all entry/exit events with timestamps','Admin dashboard for managing employees, departments, and access levels','Role-based access control with department-wise and zone-based permissions','Mobile-optimized scanner interface for security personnel use','Analytics on access patterns, peak times, and anomaly detection'],
-    stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']
-  },
-  task:{
-    badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span>',
-    title:'ProTask — Kanban Task Manager',
-    desc:'A beautiful, drag-and-drop Kanban board inspired by Notion and Linear. Built for teams and individuals who need a clean, fast, and flexible task management experience.',
-    features:['Drag-and-drop task cards across customizable workflow columns','Priority tags, labels, due dates, and assignee management','Real-time collaboration — changes reflect instantly for all team members via Socket.io','Sub-tasks, file attachments, and inline commenting on cards','Keyboard shortcuts for power users and fast navigation','Board, list, and timeline view modes','Activity log for each task and board-level changelog'],
-    stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','DnD Kit','JWT','Framer Motion']
-  },
-  chat:{
-    badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span>',
-    title:'NexusChat — AI Chat Interface',
-    desc:'A sleek, production-quality chat interface for conversing with large language models. Designed for clarity, speed, and a great user experience — think a polished alternative to ChatGPT.',
-    features:['Multi-session conversation management with persistent history','Streaming responses for real-time output as the model generates','Markdown rendering with syntax-highlighted code blocks','Model switching between GPT-4, GPT-3.5, and other providers','System prompt customization for different personas and use cases','Conversation export as markdown or PDF','Dark/light mode and font size accessibility settings'],
-    stack:['Next.js','OpenAI API','MongoDB','Tailwind CSS','Streaming API','JWT','Marked.js']
-  }
+  neural:{badge:'<span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span>',title:'NeuralLearn — AI Powered LMS',desc:'Full-featured, enterprise-grade LMS on the MERN stack with AI capabilities — rivalling commercial platforms.',features:['Interactive analytics dashboards with Chart.js','AI-powered student chatbot for Q&A and course guidance','Integrated job portal connecting students with employers','Role-based access — Student, Instructor, Admin','Course creation, quiz system, and progress analytics','JWT with refresh tokens and bcrypt hashing','Real-time notifications with polling architecture'],stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','RBAC','bcrypt']},
+  spendwise:{badge:'<span class="bdg bg2">MERN Stack</span>',title:'SpendWise — Smart Expense Tracker',desc:'Smart personal finance app focused on clean UX, speed, and actionable data visualization for everyday budgeting.',features:['Real-time expense and income logging','Category-wise pie charts and bar graphs','Monthly/yearly budget with overspend alerts','JWT auth with bcrypt passwords','Filter by date, category, and amount','Monthly trend analysis','CSV export'],stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']},
+  career:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',title:'AI Career Copilot',desc:'AI career assistant using Langchain agents and LLMs to generate tailored resumes, practice interviews, and discover jobs.',features:['ATS resume builder with Langchain agents','Interview prep with role-specific Q&A and AI feedback','Personalized job opportunity discovery','Context-aware career advice','Multi-turn conversation history','PDF resume export'],stack:['Next.js','Node.js','Langchain','OpenAI API','MongoDB','JWT','Tailwind CSS']},
+  portfolio:{badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span>',title:'Personal Portfolio Website',desc:'Meticulously designed developer portfolio built from scratch with vanilla HTML/CSS/JS and rich animations.',features:['Particle canvas with mouse interaction','Glitch text and gradient animations','Intersection Observer scroll reveals','Custom magnetic cursor with blend-mode','Typing animation cycling multiple roles','Skill bars, ring charts, animated counters','EmailJS contact form','Fully responsive'],stack:['HTML5','CSS3','Vanilla JS','Canvas API','EmailJS','CSS Animations']},
+  resume:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',title:'Resume Analyzer',desc:'AI resume review tool — upload PDFs, get ATS scoring, gap analysis, and specific improvement suggestions via Langchain RAG.',features:['PDF upload with intelligent text extraction','Langchain RAG for context-aware analysis','Job description matching and gap identification','ATS keyword scoring','Section-by-section feedback','Pinecone vector similarity matching'],stack:['React.js','Node.js','Langchain','OpenAI API','Pinecone','MongoDB','JWT','PDF.js']},
+  expendify:{badge:'<span class="bdg bg2">MERN Stack</span>',title:'Expendify — Group Expense Splitter',desc:'Collaborative expense management for groups, roommates, and trips with real-time syncing.',features:['Groups with email/link invites','Flexible split options — equal, percentage, custom','Real-time debt tracking','Settlement suggestions to minimize transactions','Visual spending breakdown','Socket.io real-time updates'],stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','JWT','Chart.js']},
+  qr:{badge:'<span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span>',title:'QR-Based Employee Authorization',desc:'Enterprise access control with dynamic time-expiring QR codes for secure, auditable workplace management.',features:['Dynamic QR with configurable expiry','Real-time auth checks under 100ms','Audit logs with timestamps','Admin dashboard for departments','Zone-based RBAC permissions','Mobile-optimized scanner UI','Access pattern analytics'],stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']},
+  task:{badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">MERN Stack</span>',title:'ProTask — Kanban Task Manager',desc:'Beautiful drag-and-drop Kanban board for team task management inspired by Notion and Linear.',features:['Drag-and-drop across custom workflow columns','Priority tags, labels, due dates, assignees','Real-time collaboration via Socket.io','Sub-tasks, file attachments, inline comments','Keyboard shortcuts for power users','Board and list view modes'],stack:['React.js','Node.js','Express.js','MongoDB','Socket.io','DnD Kit','JWT','Framer Motion']},
+  chat:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg1">Frontend</span>',title:'NexusChat — AI Chat Interface',desc:'Production-quality chat interface for LLMs with multi-session management, streaming, and polished UX.',features:['Multi-session management with persistent history','Streaming responses in real-time','Markdown with syntax-highlighted code blocks','Model switching between GPT variants','System prompt customization','Export as markdown or PDF','Dark/light mode and font size settings'],stack:['Next.js','OpenAI API','MongoDB','Tailwind CSS','Streaming API','JWT','Marked.js']}
 };
 
 function openModal(id){
-  const d=mdata[id];
-  if(!d)return;
+  const d=mdata[id];if(!d)return;
   document.getElementById('mc2').innerHTML=`
     <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem">${d.badge}</div>
     <h2 class="mt2">${d.title}</h2>

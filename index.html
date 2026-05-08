@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Arpit Aware — Full Stack Developer</title>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236ee7b7'/><stop offset='100%25' stop-color='%23818cf8'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><rect x='2' y='2' width='28' height='28' rx='6' fill='%23050508'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='900' font-size='16' fill='%236ee7b7'>AA</text></svg>">
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     :root{
@@ -182,29 +184,182 @@
     .pt{font-family:var(--fd);font-weight:700;font-size:.95rem;margin-bottom:.7rem}
     .pd{font-size:12px;color:var(--muted);line-height:1.7}
 
-    /* PROJECTS */
-    .pl{display:flex;flex-direction:column;gap:1.5rem;margin-top:4rem}
-    .pi{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.8rem 3rem;display:grid;grid-template-columns:auto 1fr auto;gap:2.5rem;align-items:center;position:relative;overflow:hidden;transition:all .45s var(--ease);cursor:none}
-    .pi::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(110,231,183,.03) 0%,transparent 60%);opacity:0;transition:opacity .4s ease}
-    .pi:hover::before{opacity:1}
-    .pi:hover{border-color:rgba(110,231,183,.22);transform:translateY(-4px);box-shadow:0 30px 80px rgba(0,0,0,.5)}
-    .pi.ft{border-color:rgba(110,231,183,.1);background:linear-gradient(135deg,var(--surface),rgba(110,231,183,.02))}
-    .pidx{font-family:var(--fd);font-weight:800;font-size:3.5rem;color:rgba(255,255,255,.04);line-height:1;user-select:none;min-width:80px;transition:color .4s ease}
-    .pi:hover .pidx{color:rgba(110,231,183,.08)}
-    .pbd{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+    /* SHARED BADGES */
     .bdg{display:inline-flex;align-items:center;gap:.3rem;padding:.28rem .7rem;border-radius:100px;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
     .bg1{background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);color:var(--accent)}
     .bg2{background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.2);color:var(--accent2)}
     .bg3{background:rgba(244,114,182,.08);border:1px solid rgba(244,114,182,.2);color:var(--accent3)}
-    .ptt{font-family:var(--fd);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;margin-bottom:.8rem}
-    .pds{font-size:12.5px;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;max-width:620px}
-    .pst{display:flex;flex-wrap:wrap;gap:.45rem}
     .sp{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:10px;padding:.25rem .65rem;border-radius:4px;letter-spacing:.04em}
-    .pa{display:flex;flex-direction:column;gap:.8rem;align-items:flex-end;min-width:120px}
-    .plb{display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);text-decoration:none;font-size:11px;letter-spacing:.06em;padding:.5rem 1rem;border:1px solid rgba(110,231,183,.2);border-radius:6px;transition:all .3s ease;white-space:nowrap}
-    .plb:hover{background:rgba(110,231,183,.08);border-color:rgba(110,231,183,.4);transform:translateX(-3px)}
-    .plb.sec{color:var(--muted);border-color:var(--border)}
-    .plb.sec:hover{color:var(--text);border-color:var(--border2)}
+
+    /* ============================================================
+       PROJECT CAROUSEL — pure CSS infinite scroll
+    ============================================================ */
+    .carousel-outer{position:relative;margin-top:3rem}
+
+    /* Fade edges */
+    .carousel-outer::before,.carousel-outer::after{
+      content:'';position:absolute;top:0;bottom:0;width:140px;z-index:10;pointer-events:none
+    }
+    .carousel-outer::before{left:0;background:linear-gradient(to right,var(--bg2) 0%,transparent 100%)}
+    .carousel-outer::after{right:0;background:linear-gradient(to left,var(--bg2) 0%,transparent 100%)}
+
+    .carousel-track-wrap{overflow:hidden;padding:1.5rem 0 2.5rem}
+
+    /* The marquee strip — two identical sets of cards side by side */
+    .carousel-track{
+      display:flex;gap:1.6rem;
+      width:max-content;
+      animation:marquee 38s linear infinite
+    }
+    .carousel-track:hover{animation-play-state:paused}
+    @keyframes marquee{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-50%)}
+    }
+
+    /* ---- CARD ---- */
+    .pc2{
+      width:340px;
+      flex-shrink:0;
+      border-radius:22px;
+      background:var(--surface);
+      border:1px solid var(--border);
+      overflow:hidden;
+      position:relative;
+      transition:transform .45s var(--ease),box-shadow .45s ease,border-color .45s ease;
+      cursor:none
+    }
+    .pc2:hover{
+      transform:translateY(-10px) scale(1.02);
+      box-shadow:0 40px 80px rgba(0,0,0,.6);
+      border-color:rgba(110,231,183,.25)
+    }
+    .pc2.featured{border-color:rgba(110,231,183,.18)}
+    .pc2.featured::after{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,rgba(110,231,183,.6),transparent)
+    }
+
+    /* -- card image cover -- */
+    .pc2-img{
+      position:relative;
+      width:100%;
+      height:200px;
+      overflow:hidden;
+      background:var(--surface2)
+    }
+    .pc2-img-inner{
+      width:100%;height:100%;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;overflow:hidden
+    }
+    /* Generated visual covers using CSS gradients + SVG-like shapes */
+    .pc2-img-inner::before{
+      content:'';position:absolute;inset:0;
+      transition:transform .6s var(--ease)
+    }
+    .pc2:hover .pc2-img-inner::before{transform:scale(1.08)}
+
+    /* Cover theme per project */
+    .cover-neural .pc2-img-inner::before{
+      background:linear-gradient(135deg,#0a1628 0%,#0e2744 40%,#1a3a5c 70%,#0d1f35 100%)
+    }
+    .cover-neural .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 30% 40%,rgba(110,231,183,.18) 0%,transparent 55%),
+                 radial-gradient(circle at 75% 70%,rgba(129,140,248,.14) 0%,transparent 45%)
+    }
+    .cover-spend .pc2-img-inner::before{
+      background:linear-gradient(135deg,#0d1f0f 0%,#0a2010 40%,#122b14 70%,#061408 100%)
+    }
+    .cover-spend .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 60% 30%,rgba(110,231,183,.2) 0%,transparent 50%),
+                 radial-gradient(circle at 25% 70%,rgba(74,222,128,.12) 0%,transparent 40%)
+    }
+    .cover-career .pc2-img-inner::before{
+      background:linear-gradient(135deg,#160a28 0%,#1e0a35 40%,#280d45 70%,#120820 100%)
+    }
+    .cover-career .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 40% 35%,rgba(244,114,182,.2) 0%,transparent 50%),
+                 radial-gradient(circle at 70% 65%,rgba(129,140,248,.18) 0%,transparent 45%)
+    }
+    .cover-portfolio .pc2-img-inner::before{
+      background:linear-gradient(135deg,#050510 0%,#08081a 40%,#0e0e26 70%,#030308 100%)
+    }
+    .cover-portfolio .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 50% 50%,rgba(129,140,248,.2) 0%,transparent 55%),
+                 radial-gradient(circle at 80% 20%,rgba(110,231,183,.1) 0%,transparent 35%)
+    }
+    .cover-resume .pc2-img-inner::before{
+      background:linear-gradient(135deg,#200818 0%,#2a0a20 40%,#320c28 70%,#180610 100%)
+    }
+    .cover-resume .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 35% 55%,rgba(244,114,182,.22) 0%,transparent 50%),
+                 radial-gradient(circle at 70% 25%,rgba(251,191,36,.1) 0%,transparent 40%)
+    }
+    .cover-qr .pc2-img-inner::before{
+      background:linear-gradient(135deg,#0a1820 0%,#0d2030 40%,#122840 70%,#081018 100%)
+    }
+    .cover-qr .pc2-img-inner::after{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(circle at 55% 40%,rgba(251,191,36,.18) 0%,transparent 50%),
+                 radial-gradient(circle at 25% 70%,rgba(110,231,183,.12) 0%,transparent 40%)
+    }
+
+    /* SVG icon on covers */
+    .cover-icon{
+      position:relative;z-index:2;
+      display:flex;align-items:center;justify-content:center;
+      flex-direction:column;gap:.8rem
+    }
+    .cover-emoji{font-size:3.5rem;line-height:1;filter:drop-shadow(0 0 20px currentColor)}
+    .cover-num{
+      font-family:var(--fd);font-weight:800;font-size:4.5rem;
+      color:rgba(255,255,255,.04);letter-spacing:-.05em;
+      position:absolute;bottom:.5rem;right:1.2rem;line-height:1;
+      transition:color .4s ease
+    }
+    .pc2:hover .cover-num{color:rgba(255,255,255,.08)}
+
+    /* floating dots on cover */
+    .cover-dots{position:absolute;z-index:1;inset:0;overflow:hidden}
+    .cover-dot{
+      position:absolute;border-radius:50%;
+      animation:cdrift 8s ease-in-out infinite
+    }
+    @keyframes cdrift{
+      0%,100%{transform:translateY(0) scale(1)}
+      50%{transform:translateY(-12px) scale(1.1)}
+    }
+
+    /* card body */
+    .pc2-body{padding:1.6rem 1.8rem 1.8rem}
+    .pc2-badges{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem}
+    .pc2-title{
+      font-family:var(--fd);font-weight:800;font-size:1.15rem;
+      letter-spacing:-.025em;margin-bottom:.6rem;line-height:1.2
+    }
+    .pc2-desc{
+      font-size:11.5px;color:var(--muted);line-height:1.8;
+      margin-bottom:1.1rem;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+    }
+    .pc2-stack{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.2rem}
+    .pc2-actions{display:flex;gap:.6rem;align-items:center}
+    .pc2-btn{
+      display:inline-flex;align-items:center;gap:.35rem;
+      padding:.5rem 1rem;border-radius:7px;font-size:10px;
+      letter-spacing:.06em;text-decoration:none;font-family:var(--fd);font-weight:700;
+      transition:all .3s ease;white-space:nowrap
+    }
+    .pc2-btn.primary{background:var(--accent);color:#050508}
+    .pc2-btn.primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(110,231,183,.3)}
+    .pc2-btn.outline{border:1px solid var(--border2);color:var(--text2)}
+    .pc2-btn.outline:hover{border-color:rgba(110,231,183,.3);color:var(--accent)}
 
     /* ===== EXPERIENCE / EDUCATION — FULLY RESPONSIVE ===== */
     .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:1rem}
@@ -348,15 +503,16 @@
       #services{padding:4rem 2rem}
       #ringstat{padding:4rem 0}
       #quote-sec{padding:4rem 2rem}
-      .pi{grid-template-columns:1fr;gap:1.5rem}
-      .pidx{font-size:2.2rem;min-width:auto}
-      .pa{flex-direction:row;align-items:flex-start;flex-wrap:wrap}
       .cg{grid-template-columns:1fr;gap:3rem}
       .fi3{flex-direction:column;align-items:flex-start}
       .flks{display:none}
       footer{padding:2rem}
       .float-social,.float-mail{display:none}
       .tl{margin-top:2rem}
+      /* carousel mobile */
+      .carousel-outer::before,.carousel-outer::after{width:40px}
+      #projects>div:first-of-type{padding:0 1.5rem}
+      .pc2{width:290px}
     }
     @media(max-width:640px){
       .kg{grid-template-columns:1fr}
@@ -367,8 +523,13 @@
       .mb{padding:1.5rem;border-radius:16px}
       .modal-btns{flex-direction:column}
       .modal-btns a{text-align:center;justify-content:center}
-      .pi{padding:1.5rem}
       .exp-grid{gap:0}
+      /* carousel small mobile */
+      .pc2{width:260px}
+      .pc2-body{padding:1.2rem 1.4rem 1.4rem}
+      .pc2-title{font-size:1rem}
+      .carousel-outer::before,.carousel-outer::after{width:24px}
+      #projects>div:first-of-type{padding:0 1rem}
     }
   </style>
 </head>
@@ -539,63 +700,303 @@
   </div>
 </section>
 
-<!-- PROJECTS -->
-<section id="projects" class="sec" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-  <div class="si">
+<!-- PROJECTS CAROUSEL -->
+<section id="projects" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 0 5rem;position:relative;z-index:1;overflow:hidden">
+
+  <!-- section header -->
+  <div style="padding:0 5rem;max-width:1200px;margin:0 auto 0">
     <div class="sl2 rv">Selected Work</div>
-    <h2 class="st2 rv">Projects that <span class="hi">speak</span></h2>
-    <p class="ss rv">Each project is a real-world solution built with focus on UX, performance, and clean code. Click any project to explore.</p>
-    <div class="pl">
-      <div class="pi ft rv" onclick="openModal('neural')">
-        <div class="pidx">01</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
-          <h3 class="ptt">NeuralLearn — AI Powered LMS</h3>
-          <p class="pds">A comprehensive, enterprise-grade LMS with AI-powered chatbot, interactive dashboards, integrated job portal, role-based access control, course management, and real-time notifications — built end-to-end on the MERN stack.</p>
-          <div class="pst"><span class="sp">MongoDB</span><span class="sp">Express.js</span><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span><span class="sp">Chart.js</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb sec" onclick="event.stopPropagation();openModal('neural')">Details →</span>
-        </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:0">
+      <div>
+        <h2 class="st2 rv" style="margin-bottom:.5rem">Projects that <span class="hi">speak</span></h2>
+        <p style="font-size:13px;color:var(--muted);line-height:1.8" class="rv">Hover to pause · Click any card for details.</p>
       </div>
-
-      <div class="pi rv" onclick="openModal('spendwise')">
-        <div class="pidx">02</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg2">MERN Stack</span></div>
-          <h3 class="ptt">SpendWise — Smart Expense Tracker</h3>
-          <p class="pds">Smart personal finance app with real-time tracking, budget management, category-wise analytics, visual dashboards, CSV export, and full JWT authentication — designed for clarity and speed.</p>
-          <div class="pst"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Express</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb sec" onclick="event.stopPropagation();openModal('spendwise')">Details →</span>
-        </div>
-      </div>
-
-      <div class="pi rv" onclick="openModal('career')">
-        <div class="pidx">03</div>
-        <div class="pb">
-          <div class="pbd"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
-          <h3 class="ptt">AI Career Copilot</h3>
-          <p class="pds">An AI-powered career assistant that helps users build resumes, prep for interviews, and discover job opportunities. Uses Langchain agents to generate personalized career advice and tailored content.</p>
-          <div class="pst"><span class="sp">Next.js</span><span class="sp">Node.js</span><span class="sp">Langchain</span><span class="sp">OpenAI</span><span class="sp">MongoDB</span><span class="sp">JWT</span></div>
-        </div>
-        <div class="pa">
-          <a href="https://github.com/ArpitAware" target="_blank" class="plb" onclick="event.stopPropagation()">GitHub ↗</a>
-          <span class="plb sec" onclick="event.stopPropagation();openModal('career')">Details →</span>
-        </div>
-      </div>
-
-      <div style="text-align:center;margin-top:3rem" class="rv">
-        <a href="projects.html" class="bp mag" style="display:inline-flex;align-items:center;gap:.5rem">
-          <span>See All Projects</span><span>→</span>
-        </a>
-      </div>
+      <a href="projects.html" class="bp rv" style="margin-bottom:1rem;display:inline-flex;align-items:center;gap:.5rem;flex-shrink:0">
+        <span>All Projects</span><span>→</span>
+      </a>
     </div>
   </div>
+
+  <!-- full-bleed infinite marquee -->
+  <div class="carousel-outer rv" style="transition-delay:.2s">
+    <div class="carousel-track-wrap">
+      <div class="carousel-track">
+
+        <!-- ══ SET A ══ -->
+        <!-- CARD 1: NeuralLearn -->
+        <div class="pc2 featured cover-neural" onclick="openModal('neural')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:80px;height:80px;background:rgba(110,231,183,.06);top:10%;left:5%;animation-delay:0s"></div>
+              <div class="cover-dot" style="width:50px;height:50px;background:rgba(129,140,248,.08);top:50%;right:10%;animation-delay:2s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(110,231,183,.9)">🧠</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(110,231,183,.55);position:relative;z-index:2">NeuralLearn</div>
+            </div>
+            <div class="cover-num">01</div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.05" viewBox="0 0 340 200" preserveAspectRatio="none">
+              <line x1="0" y1="50" x2="340" y2="50" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="100" x2="340" y2="100" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="150" x2="340" y2="150" stroke="#6ee7b7" stroke-width=".8"/>
+              <line x1="85" y1="0" x2="85" y2="200" stroke="#6ee7b7" stroke-width=".8"/><line x1="170" y1="0" x2="170" y2="200" stroke="#6ee7b7" stroke-width=".8"/><line x1="255" y1="0" x2="255" y2="200" stroke="#6ee7b7" stroke-width=".8"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
+            <h3 class="pc2-title">NeuralLearn — AI Powered LMS</h3>
+            <p class="pc2-desc">Enterprise LMS with AI chatbot, dashboards, job portal, and RBAC built end-to-end on MERN.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('neural')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: SpendWise -->
+        <div class="pc2 cover-spend" onclick="openModal('spendwise')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:90px;height:90px;background:rgba(110,231,183,.05);top:5%;right:5%;animation-delay:1s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(74,222,128,.9)">💰</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(110,231,183,.55);position:relative;z-index:2">SpendWise</div>
+            </div>
+            <div class="cover-num">02</div>
+            <svg style="position:absolute;bottom:0;left:0;right:0;opacity:.1" viewBox="0 0 340 80" preserveAspectRatio="none">
+              <rect x="20" y="30" width="28" height="50" rx="3" fill="#6ee7b7"/><rect x="60" y="15" width="28" height="65" rx="3" fill="#6ee7b7"/>
+              <rect x="100" y="40" width="28" height="40" rx="3" fill="#6ee7b7"/><rect x="140" y="10" width="28" height="70" rx="3" fill="#6ee7b7"/>
+              <rect x="180" y="25" width="28" height="55" rx="3" fill="#6ee7b7"/><rect x="220" y="45" width="28" height="35" rx="3" fill="#6ee7b7"/>
+              <rect x="260" y="20" width="28" height="60" rx="3" fill="#6ee7b7"/><rect x="300" y="35" width="28" height="45" rx="3" fill="#6ee7b7"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg2">MERN Stack</span></div>
+            <h3 class="pc2-title">SpendWise — Expense Tracker</h3>
+            <p class="pc2-desc">Smart personal finance app with real-time tracking, budget alerts, and category analytics.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('spendwise')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: AI Career Copilot -->
+        <div class="pc2 cover-career" onclick="openModal('career')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:70px;height:70px;background:rgba(244,114,182,.07);top:15%;left:10%;animation-delay:.5s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(244,114,182,.9)">🚀</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,114,182,.55);position:relative;z-index:2">AI Copilot</div>
+            </div>
+            <div class="cover-num">03</div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.06" viewBox="0 0 340 200">
+              <circle cx="50" cy="100" r="5" fill="#f472b6"/><circle cx="140" cy="60" r="5" fill="#818cf8"/><circle cx="140" cy="140" r="5" fill="#818cf8"/><circle cx="230" cy="80" r="5" fill="#f472b6"/><circle cx="230" cy="120" r="5" fill="#f472b6"/><circle cx="290" cy="100" r="5" fill="#818cf8"/>
+              <line x1="50" y1="100" x2="140" y2="60" stroke="#f472b6" stroke-width="1"/><line x1="50" y1="100" x2="140" y2="140" stroke="#f472b6" stroke-width="1"/>
+              <line x1="140" y1="60" x2="230" y2="80" stroke="#818cf8" stroke-width="1"/><line x1="140" y1="140" x2="230" y2="120" stroke="#818cf8" stroke-width="1"/>
+              <line x1="230" y1="80" x2="290" y2="100" stroke="#f472b6" stroke-width="1"/><line x1="230" y1="120" x2="290" y2="100" stroke="#f472b6" stroke-width="1"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">AI Career Copilot</h3>
+            <p class="pc2-desc">AI-powered career assistant for ATS resumes, interview prep, and job discovery via Langchain.</p>
+            <div class="pc2-stack"><span class="sp">Next.js</span><span class="sp">Langchain</span><span class="sp">OpenAI</span><span class="sp">MongoDB</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('career')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: Portfolio -->
+        <div class="pc2 cover-portfolio" onclick="openModal('portfolio')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:100px;height:100px;background:rgba(129,140,248,.05);top:0%;left:-10%;animation-delay:1.5s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(129,140,248,.9)">✦</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(129,140,248,.55);position:relative;z-index:2">Portfolio</div>
+            </div>
+            <div class="cover-num">04</div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.13" viewBox="0 0 340 200">
+              <circle cx="60" cy="40" r="2.5" fill="#818cf8"/><circle cx="120" cy="80" r="2" fill="#6ee7b7"/><circle cx="200" cy="30" r="2.5" fill="#f472b6"/>
+              <circle cx="280" cy="90" r="2" fill="#818cf8"/><circle cx="40" cy="150" r="2.5" fill="#6ee7b7"/>
+              <circle cx="160" cy="160" r="2" fill="#818cf8"/><circle cx="240" cy="140" r="2.5" fill="#f472b6"/><circle cx="310" cy="160" r="2" fill="#6ee7b7"/>
+              <line x1="60" y1="40" x2="120" y2="80" stroke="#818cf8" stroke-width=".6" opacity=".5"/><line x1="120" y1="80" x2="200" y2="30" stroke="#6ee7b7" stroke-width=".6" opacity=".5"/>
+              <line x1="200" y1="30" x2="280" y2="90" stroke="#f472b6" stroke-width=".6" opacity=".5"/><line x1="40" y1="150" x2="160" y2="160" stroke="#6ee7b7" stroke-width=".6" opacity=".5"/>
+              <line x1="160" y1="160" x2="240" y2="140" stroke="#818cf8" stroke-width=".6" opacity=".5"/><line x1="240" y1="140" x2="310" y2="160" stroke="#f472b6" stroke-width=".6" opacity=".5"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span></div>
+            <h3 class="pc2-title">Personal Portfolio Website</h3>
+            <p class="pc2-desc">This very site — particle canvas, glitch effects, scroll animations, fully responsive.</p>
+            <div class="pc2-stack"><span class="sp">HTML5</span><span class="sp">CSS3</span><span class="sp">Vanilla JS</span><span class="sp">Canvas API</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('portfolio')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5: Resume Analyzer -->
+        <div class="pc2 cover-resume" onclick="openModal('resume')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:60px;height:60px;background:rgba(244,114,182,.07);top:20%;right:15%;animation-delay:.8s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(244,114,182,.9)">📄</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,114,182,.55);position:relative;z-index:2">Resume AI</div>
+            </div>
+            <div class="cover-num">05</div>
+            <svg style="position:absolute;bottom:15px;left:50%;transform:translateX(-50%);opacity:.1;width:120px;height:80px" viewBox="0 0 120 80">
+              <rect x="5" y="5" width="110" height="70" rx="4" fill="none" stroke="#f472b6" stroke-width="1.5"/>
+              <line x1="15" y1="20" x2="105" y2="20" stroke="#f472b6" stroke-width="1"/><line x1="15" y1="33" x2="85" y2="33" stroke="#f472b6" stroke-width="1"/>
+              <line x1="15" y1="46" x2="95" y2="46" stroke="#f472b6" stroke-width="1"/><line x1="15" y1="59" x2="70" y2="59" stroke="#f472b6" stroke-width="1"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">Resume Analyzer</h3>
+            <p class="pc2-desc">AI-powered PDF resume review with ATS scoring, gap detection, and actionable improvements.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Langchain</span><span class="sp">Pinecone</span><span class="sp">OpenAI</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('resume')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 6: QR Auth -->
+        <div class="pc2 cover-qr" onclick="openModal('qr')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots">
+              <div class="cover-dot" style="width:75px;height:75px;background:rgba(251,191,36,.05);top:5%;left:5%;animation-delay:1.2s"></div>
+            </div>
+            <div class="cover-icon">
+              <div class="cover-emoji" style="color:rgba(251,191,36,.9)">🔐</div>
+              <div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(251,191,36,.55);position:relative;z-index:2">QR Auth</div>
+            </div>
+            <div class="cover-num">06</div>
+            <svg style="position:absolute;bottom:10px;right:15px;opacity:.1;width:60px;height:60px" viewBox="0 0 60 60">
+              <rect x="2" y="2" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="8" y="8" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+              <rect x="34" y="2" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="40" y="8" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+              <rect x="2" y="34" width="24" height="24" rx="2" fill="none" stroke="#fbbf24" stroke-width="2"/><rect x="8" y="40" width="12" height="12" rx="1" fill="#fbbf24" opacity=".7"/>
+              <rect x="34" y="34" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/><rect x="44" y="34" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/>
+              <rect x="34" y="44" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/><rect x="44" y="50" width="6" height="6" rx="1" fill="#fbbf24" opacity=".7"/>
+            </svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">QR Employee Authorization</h3>
+            <p class="pc2-desc">Enterprise access control with time-expiring QR codes, audit logs, and RBAC.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">RBAC</span></div>
+            <div class="pc2-actions">
+              <button class="pc2-btn primary" onclick="event.stopPropagation();openModal('qr')">Details →</button>
+              <a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SET B — exact duplicate for seamless loop ══ -->
+        <div class="pc2 featured cover-neural" onclick="openModal('neural')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:80px;height:80px;background:rgba(110,231,183,.06);top:10%;left:5%;animation-delay:.5s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(110,231,183,.9)">🧠</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(110,231,183,.55);position:relative;z-index:2">NeuralLearn</div></div>
+            <div class="cover-num">01</div>
+            <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.05" viewBox="0 0 340 200" preserveAspectRatio="none"><line x1="0" y1="50" x2="340" y2="50" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="100" x2="340" y2="100" stroke="#6ee7b7" stroke-width=".8"/><line x1="0" y1="150" x2="340" y2="150" stroke="#6ee7b7" stroke-width=".8"/><line x1="85" y1="0" x2="85" y2="200" stroke="#6ee7b7" stroke-width=".8"/><line x1="170" y1="0" x2="170" y2="200" stroke="#6ee7b7" stroke-width=".8"/><line x1="255" y1="0" x2="255" y2="200" stroke="#6ee7b7" stroke-width=".8"/></svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span></div>
+            <h3 class="pc2-title">NeuralLearn — AI Powered LMS</h3>
+            <p class="pc2-desc">Enterprise LMS with AI chatbot, dashboards, job portal, and RBAC built end-to-end on MERN.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">AI Chatbot</span><span class="sp">JWT</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('neural')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="pc2 cover-spend" onclick="openModal('spendwise')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:90px;height:90px;background:rgba(110,231,183,.05);top:5%;right:5%;animation-delay:1.5s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(74,222,128,.9)">💰</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(110,231,183,.55);position:relative;z-index:2">SpendWise</div></div>
+            <div class="cover-num">02</div>
+            <svg style="position:absolute;bottom:0;left:0;right:0;opacity:.1" viewBox="0 0 340 80" preserveAspectRatio="none"><rect x="20" y="30" width="28" height="50" rx="3" fill="#6ee7b7"/><rect x="60" y="15" width="28" height="65" rx="3" fill="#6ee7b7"/><rect x="100" y="40" width="28" height="40" rx="3" fill="#6ee7b7"/><rect x="140" y="10" width="28" height="70" rx="3" fill="#6ee7b7"/><rect x="180" y="25" width="28" height="55" rx="3" fill="#6ee7b7"/><rect x="220" y="45" width="28" height="35" rx="3" fill="#6ee7b7"/><rect x="260" y="20" width="28" height="60" rx="3" fill="#6ee7b7"/><rect x="300" y="35" width="28" height="45" rx="3" fill="#6ee7b7"/></svg>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg2">MERN Stack</span></div>
+            <h3 class="pc2-title">SpendWise — Expense Tracker</h3>
+            <p class="pc2-desc">Smart personal finance app with real-time tracking, budget alerts, and category analytics.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">Chart.js</span><span class="sp">JWT</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('spendwise')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="pc2 cover-career" onclick="openModal('career')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:70px;height:70px;background:rgba(244,114,182,.07);top:15%;left:10%;animation-delay:1s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(244,114,182,.9)">🚀</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,114,182,.55);position:relative;z-index:2">AI Copilot</div></div>
+            <div class="cover-num">03</div>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">AI Career Copilot</h3>
+            <p class="pc2-desc">AI-powered career assistant for ATS resumes, interview prep, and job discovery via Langchain.</p>
+            <div class="pc2-stack"><span class="sp">Next.js</span><span class="sp">Langchain</span><span class="sp">OpenAI</span><span class="sp">MongoDB</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('career')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="pc2 cover-portfolio" onclick="openModal('portfolio')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:100px;height:100px;background:rgba(129,140,248,.05);top:0%;left:-10%;animation-delay:2s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(129,140,248,.9)">✦</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(129,140,248,.55);position:relative;z-index:2">Portfolio</div></div>
+            <div class="cover-num">04</div>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span></div>
+            <h3 class="pc2-title">Personal Portfolio Website</h3>
+            <p class="pc2-desc">This very site — particle canvas, glitch effects, scroll animations, fully responsive.</p>
+            <div class="pc2-stack"><span class="sp">HTML5</span><span class="sp">CSS3</span><span class="sp">Vanilla JS</span><span class="sp">Canvas API</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('portfolio')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="pc2 cover-resume" onclick="openModal('resume')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:60px;height:60px;background:rgba(244,114,182,.07);top:20%;right:15%;animation-delay:1.3s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(244,114,182,.9)">📄</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,114,182,.55);position:relative;z-index:2">Resume AI</div></div>
+            <div class="cover-num">05</div>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">Resume Analyzer</h3>
+            <p class="pc2-desc">AI-powered PDF resume review with ATS scoring, gap detection, and actionable improvements.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Langchain</span><span class="sp">Pinecone</span><span class="sp">OpenAI</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('resume')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="pc2 cover-qr" onclick="openModal('qr')">
+          <div class="pc2-img"><div class="pc2-img-inner">
+            <div class="cover-dots"><div class="cover-dot" style="width:75px;height:75px;background:rgba(251,191,36,.05);top:5%;left:5%;animation-delay:1.7s"></div></div>
+            <div class="cover-icon"><div class="cover-emoji" style="color:rgba(251,191,36,.9)">🔐</div><div style="font-family:var(--fd);font-weight:800;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(251,191,36,.55);position:relative;z-index:2">QR Auth</div></div>
+            <div class="cover-num">06</div>
+          </div></div>
+          <div class="pc2-body">
+            <div class="pc2-badges"><span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span></div>
+            <h3 class="pc2-title">QR Employee Authorization</h3>
+            <p class="pc2-desc">Enterprise access control with time-expiring QR codes, audit logs, and RBAC.</p>
+            <div class="pc2-stack"><span class="sp">React.js</span><span class="sp">Node.js</span><span class="sp">MongoDB</span><span class="sp">RBAC</span></div>
+            <div class="pc2-actions"><button class="pc2-btn primary" onclick="event.stopPropagation();openModal('qr')">Details →</button><a href="https://github.com/ArpitAware" target="_blank" class="pc2-btn outline" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+
+      </div><!-- end track -->
+    </div><!-- end wrap -->
+  </div><!-- end carousel-outer -->
 </section>
+
 
 <!-- PROCESS -->
 <section id="process" class="sec">
@@ -957,7 +1358,10 @@ function handleSubmit(e){
 const mdata={
   neural:{badge:'<span class="bdg bg1">✦ Featured</span><span class="bdg bg2">AI + MERN</span>',title:'NeuralLearn — AI Powered LMS',desc:'A full-featured, enterprise-grade LMS built entirely on the MERN stack with AI capabilities. My most ambitious project — solving real challenges in online education with a feature set that rivals commercial platforms.',features:['Interactive analytics dashboards with real-time data visualization using Chart.js','AI-powered student chatbot for instant Q&A and course guidance','Integrated job portal connecting students with employers and internship opportunities','Role-based access control — Student, Instructor, and Admin roles with granular permissions','Course creation, enrollment tracking, quiz system, and progress analytics','JWT authentication with secure refresh token rotation and bcrypt password hashing','Real-time notifications system with polling architecture','Fully responsive UI built with React.js and a custom component system'],stack:['MongoDB','Express.js','React.js','Node.js','JWT','Chart.js','AI Chatbot','REST API','RBAC','bcrypt']},
   spendwise:{badge:'<span class="bdg bg2">MERN Stack</span>',title:'SpendWise — Smart Expense Tracker',desc:'A smart personal finance application that makes tracking money intuitive and insightful. Designed with a focus on clean UX, speed, and actionable data visualization for everyday budgeting.',features:['Real-time expense and income logging with instant UI updates','Category-wise breakdown with interactive pie charts and bar graphs','Monthly/yearly budget setting with visual overspend alerts','Full JWT authentication with bcrypt-hashed passwords','Filter and search transactions by date, category, and amount','Monthly trend analysis with comparative charts','Export transaction history to CSV for external use'],stack:['React.js','Node.js','Express.js','MongoDB','Mongoose','JWT','bcrypt','Chart.js']},
-  career:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',title:'AI Career Copilot',desc:'An AI-powered career assistant that helps users navigate their job search. Uses Langchain agents and LLMs to generate tailored resumes, practice interview answers, and discover opportunities.',features:['AI resume builder with ATS optimization powered by Langchain agents','Interview prep module with role-specific questions and AI feedback','Job opportunity discovery with smart filtering and personalization','Context-aware career advice based on user profile and goals','Conversation history with full chat interface','PDF resume export with clean, professional formatting'],stack:['Next.js','Node.js','Langchain','OpenAI API','MongoDB','JWT','Tailwind CSS']}
+  career:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',title:'AI Career Copilot',desc:'An AI-powered career assistant that helps users navigate their job search. Uses Langchain agents and LLMs to generate tailored resumes, practice interview answers, and discover opportunities.',features:['AI resume builder with ATS optimization powered by Langchain agents','Interview prep module with role-specific questions and AI feedback','Job opportunity discovery with smart filtering and personalization','Context-aware career advice based on user profile and goals','Conversation history with full chat interface','PDF resume export with clean, professional formatting'],stack:['Next.js','Node.js','Langchain','OpenAI API','MongoDB','JWT','Tailwind CSS']},
+  portfolio:{badge:'<span class="bdg bg1">Frontend</span><span class="bdg bg2">Design</span>',title:'Personal Portfolio Website',desc:'A meticulously designed developer portfolio showcasing skills, projects, and personality. Built from scratch with vanilla HTML/CSS/JS featuring rich animations and interactive elements.',features:['Custom WebGL-style particle canvas with mouse interaction and connections','Glitch text effect and gradient animations on hero section','Intersection Observer-powered scroll reveal system','Custom cursor with magnetic effects and blend-mode mixing','Smooth typing animation with multiple role cycling','Skill bars, ring charts, and animated stat counters','Fully responsive across all screen sizes','EmailJS-powered contact form with real-time feedback'],stack:['HTML5','CSS3','Vanilla JS','Canvas API','EmailJS','Intersection Observer API','CSS Animations']},
+  resume:{badge:'<span class="bdg bg3">Gen AI</span><span class="bdg bg2">Full Stack</span>',title:'Resume Analyzer',desc:'An AI-powered resume review tool that gives job seekers actionable, data-driven feedback. Upload a PDF resume and get instant scoring, gap analysis, and specific improvement suggestions powered by Langchain RAG.',features:['PDF upload and intelligent text extraction with chunking strategy','Langchain RAG pipeline for context-aware resume analysis','Job description matching with skills gap identification','ATS compatibility scoring with specific keyword suggestions','Section-by-section feedback on summary, experience, and skills','Pinecone vector store for semantic similarity matching'],stack:['React.js','Node.js','Langchain','OpenAI API','Pinecone','MongoDB','JWT','PDF.js']},
+  qr:{badge:'<span class="bdg bg3">Security</span><span class="bdg bg2">Full Stack</span>',title:'QR-Based Employee Authorization',desc:'An enterprise access control system leveraging dynamic, time-expiring QR codes for secure, fast employee verification. Built for workplaces that need reliable, auditable, and scalable access management.',features:['Dynamic QR code generation with configurable time-expiry for enhanced security','Real-time authorization checks on scan — instant allow/deny response under 100ms','Comprehensive audit logs tracking all entry/exit events with timestamps','Admin dashboard for managing employees, departments, and access levels','Role-based access control with department-wise and zone-based permissions','Mobile-optimized scanner interface for security personnel use'],stack:['React.js','Node.js','Express.js','MongoDB','QR Code API','JWT','RBAC','Mongoose']}
 };
 
 function openModal(id){
@@ -981,6 +1385,12 @@ function closeModal(){document.getElementById('mo').classList.remove('open');doc
 function closeModalBg(e){if(e.target===document.getElementById('mo'))closeModal();}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
+/* CARD CURSOR */
+document.querySelectorAll('.pc2').forEach(card=>{
+  card.addEventListener('mouseenter',()=>document.body.classList.add('big-cur'));
+  card.addEventListener('mouseleave',()=>document.body.classList.remove('big-cur'));
+});
+
 /* ACTIVE NAV */
 const sections2=document.querySelectorAll('section[id]');
 const navLinks2=document.querySelectorAll('.n-links a');
@@ -988,12 +1398,10 @@ window.addEventListener('scroll',()=>{
   let cur='';sections2.forEach(s=>{if(window.scrollY>=s.offsetTop-200)cur=s.id;});
   navLinks2.forEach(a=>{a.classList.toggle('active-nav',a.getAttribute('href')==='#'+cur);});
 },{passive:true});
-
 /* SMOOTH NAV */
 document.querySelectorAll('.n-links a,#mnav a').forEach(a=>{
   a.addEventListener('click',function(e){const href=this.getAttribute('href');if(href&&href.startsWith('#')){e.preventDefault();const target=document.querySelector(href);if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}});
 });
-
 /* KONAMI */
 const kk=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];let ki=0;
 document.addEventListener('keydown',e=>{if(e.key===kk[ki]){ki++;if(ki===kk.length){ki=0;const ee=document.getElementById('easter');ee.style.opacity='1';ee.style.visibility='visible';ee.style.transform='translateY(0)';setTimeout(()=>{ee.style.opacity='0';ee.style.transform='translateY(20px)';setTimeout(()=>ee.style.visibility='hidden',600);},3000);}}else ki=0;});
